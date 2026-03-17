@@ -46,11 +46,13 @@ export function canNavigate(direction: "up" | "down", text: string, cursor: numb
   return browsing ? atStart || atEnd : direction === "up" ? atStart : atEnd
 }
 
-/** Prepend an entry, deduplicating consecutive identical entries. Returns whether the entry was added. */
+/** Prepend an entry, moving it to front if it already exists anywhere. Returns whether entries changed. */
 export function appendEntry(entries: string[], text: string, max: number): boolean {
   const trimmed = text.trim()
   if (!trimmed) return false
-  if (entries[0] === trimmed) return false
+  const idx = entries.indexOf(trimmed)
+  if (idx === 0) return false
+  if (idx > 0) entries.splice(idx, 1)
   entries.unshift(trimmed)
   if (entries.length > max) entries.length = max
   return true

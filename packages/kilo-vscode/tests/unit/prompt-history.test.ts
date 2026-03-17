@@ -73,11 +73,11 @@ describe("appendEntry", () => {
     expect(entries).toEqual(["hello"])
   })
 
-  it("allows non-consecutive duplicates", () => {
+  it("moves existing entry to front instead of creating a duplicate", () => {
     appendEntry(entries, "first", MAX)
     appendEntry(entries, "second", MAX)
     appendEntry(entries, "first", MAX)
-    expect(entries).toEqual(["first", "second", "first"])
+    expect(entries).toEqual(["first", "second"])
   })
 
   it("enforces max size", () => {
@@ -149,5 +149,55 @@ describe("seedEntries", () => {
     seedEntries(entries, ["old1", "old2"], MAX)
     expect(entries[0]).toBe("recent")
     expect(entries).toEqual(["recent", "old2", "old1"])
+  })
+})
+
+describe("append after seed — no duplicates", () => {
+  it("does not create duplicates when appending a value that exists deeper in the array", () => {
+    const entries: string[] = []
+    // Simulate: session loaded with old messages, seed populates the array
+    seedEntries(entries, ["hi", "there", "whats", "up"], MAX)
+    // entries should be newest-first: ["up", "whats", "there", "hi"]
+    expect(entries).toEqual(["up", "whats", "there", "hi"])
+
+    // Now user re-sends "hi" — should move to front, NOT create a duplicate
+    appendEntry(entries, "hi", MAX)
+    expect(entries).toEqual(["hi", "up", "whats", "there"])
+    expect(entries).toHaveLength(4)
+  })
+
+  it("reproduces the wrap-around bug: append only deduplicates entries[0]", () => {
+    // Start with stale seed data (simulating old code or loaded session)
+    const entries: string[] = ["hi", "there", "whats", "up"]
+
+    // User sends messages in order: hi, there, whats, up
+    appendEntry(entries, "hi", MAX) // entries[0] === "hi" → skip (consecutive dedup)
+    appendEntry(entries, "there", MAX) // entries[0] === "hi" !== "there" → unshift
+    appendEntry(entries, "whats", MAX)
+    appendEntry(entries, "up", MAX)
+
+    // Should have exactly 4 unique entries, not 7 with duplicates
+    const unique = new Set(entries)
+    expect(unique.size).toBe(4)
+    expect(entries).toHaveLength(4)
+  })
+
+  it("concurrent sessions sharing module-level entries do not interfere", () => {
+    // Both sessions share the same entries array (module-level)
+    // Session A sends "alpha", Session B sends "beta"
+    const entries: string[] = []
+    appendEntry(entries, "alpha", MAX)
+    appendEntry(entries, "beta", MAX)
+    // Both are present, newest first
+    expect(entries).toEqual(["beta", "alpha"])
+
+    // Session A seeds with old messages ["x", "y"]
+    seedEntries(entries, ["x", "y"], MAX)
+    // Seeded entries go after existing, newest seeded first
+    expect(entries).toEqual(["beta", "alpha", "y", "x"])
+
+    // Session B sends "alpha" again — should move to front, not duplicate
+    appendEntry(entries, "alpha", MAX)
+    expect(entries.filter((e) => e === "alpha")).toHaveLength(1)
   })
 })
