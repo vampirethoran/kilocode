@@ -260,6 +260,10 @@ export const dict = {
   "prompt.toast.shellSendFailed.title": "Shell-Befehl konnte nicht gesendet werden",
   "prompt.toast.commandSendFailed.title": "Befehl konnte nicht gesendet werden",
   "prompt.toast.promptSendFailed.title": "Eingabe konnte nicht gesendet werden",
+  "prompt.toast.modelNotAvailable.title": "Modell nicht verfügbar",
+  "prompt.toast.modelNotAvailable.description":
+    "Das konfigurierte Modell ist nicht mehr verfügbar. Bitte wählen Sie ein anderes Modell.",
+  "prompt.toast.modelNotAvailable.action": "Modell auswählen",
 
   "dialog.mcp.title": "MCPs",
   "dialog.mcp.description": "{{enabled}} von {{total}} aktiviert",

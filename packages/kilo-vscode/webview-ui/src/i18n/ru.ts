@@ -255,6 +255,10 @@ export const dict = {
   "prompt.toast.shellSendFailed.title": "Не удалось отправить команду оболочки",
   "prompt.toast.commandSendFailed.title": "Не удалось отправить команду",
   "prompt.toast.promptSendFailed.title": "Не удалось отправить запрос",
+  "prompt.toast.modelNotAvailable.title": "Модель недоступна",
+  "prompt.toast.modelNotAvailable.description":
+    "Настроенная модель больше недоступна. Пожалуйста, выберите другую модель.",
+  "prompt.toast.modelNotAvailable.action": "Выбрать модель",
 
   "dialog.mcp.title": "MCP",
   "dialog.mcp.description": "{{enabled}} из {{total}} включено",

@@ -258,6 +258,9 @@ export const dict = {
   "prompt.toast.shellSendFailed.title": "셸 명령 전송 실패",
   "prompt.toast.commandSendFailed.title": "명령 전송 실패",
   "prompt.toast.promptSendFailed.title": "프롬프트 전송 실패",
+  "prompt.toast.modelNotAvailable.title": "모델을 사용할 수 없음",
+  "prompt.toast.modelNotAvailable.description": "구성된 모델을 더 이상 사용할 수 없습니다. 다른 모델을 선택하세요.",
+  "prompt.toast.modelNotAvailable.action": "모델 선택",
 
   "dialog.mcp.title": "MCP",
   "dialog.mcp.description": "{{total}}개 중 {{enabled}}개 활성화됨",

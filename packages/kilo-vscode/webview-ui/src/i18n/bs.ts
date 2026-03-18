@@ -256,6 +256,9 @@ export const dict = {
   "prompt.toast.shellSendFailed.title": "Neuspješno slanje shell naredbe",
   "prompt.toast.commandSendFailed.title": "Neuspješno slanje komande",
   "prompt.toast.promptSendFailed.title": "Neuspješno slanje upita",
+  "prompt.toast.modelNotAvailable.title": "Model nije dostupan",
+  "prompt.toast.modelNotAvailable.description": "Konfigurisani model više nije dostupan. Odaberite drugi model.",
+  "prompt.toast.modelNotAvailable.action": "Odaberi model",
 
   "dialog.mcp.title": "MCP-ovi",
   "dialog.mcp.description": "{{enabled}} od {{total}} omogućeno",

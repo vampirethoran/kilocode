@@ -255,6 +255,9 @@ export const dict = {
   "prompt.toast.shellSendFailed.title": "傳送 shell 命令失敗",
   "prompt.toast.commandSendFailed.title": "傳送命令失敗",
   "prompt.toast.promptSendFailed.title": "傳送提示失敗",
+  "prompt.toast.modelNotAvailable.title": "模型不可用",
+  "prompt.toast.modelNotAvailable.description": "已設定的模型已無法使用。請選擇其他模型。",
+  "prompt.toast.modelNotAvailable.action": "選擇模型",
 
   "dialog.mcp.title": "MCP",
   "dialog.mcp.description": "已啟用 {{enabled}} / {{total}}",

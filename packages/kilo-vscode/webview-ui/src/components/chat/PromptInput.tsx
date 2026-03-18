@@ -525,7 +525,8 @@ export const PromptInput: Component<PromptInputProps> = (props) => {
     const sel = session.selected()
     const attachments = allFiles.length > 0 ? allFiles : undefined
 
-    session.sendMessage(message, sel?.providerID, sel?.modelID, attachments)
+    const sent = session.sendMessage(message, sel?.providerID, sel?.modelID, attachments)
+    if (!sent) return
 
     history.append(draft)
     history.reset()

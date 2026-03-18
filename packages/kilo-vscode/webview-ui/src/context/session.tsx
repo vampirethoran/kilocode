@@ -151,7 +151,7 @@ interface SessionContextValue {
   // Actions
   revertSession: (messageID: string) => void
   unrevertSession: () => void
-  sendMessage: (text: string, providerID?: string, modelID?: string, files?: FileAttachment[]) => void
+  sendMessage: (text: string, providerID?: string, modelID?: string, files?: FileAttachment[]) => boolean
   abort: () => void
   compact: () => void
   respondToPermission: (
@@ -169,6 +169,9 @@ interface SessionContextValue {
   deleteSession: (id: string) => void
   renameSession: (id: string, title: string) => void
   syncSession: (sessionID: string) => void
+
+  // Model validation
+  isModelAvailable: (sel: ModelSelection | null) => boolean
 
   // Cloud session preview
   cloudPreviewId: Accessor<string | null>
@@ -1113,10 +1116,39 @@ export const SessionProvider: ParentComponent = (props) => {
     }
   }
 
-  function sendMessage(text: string, providerID?: string, modelID?: string, files?: FileAttachment[]) {
+  function openModelSelector() {
+    window.dispatchEvent(new CustomEvent("openModelSelector"))
+  }
+
+  function isModelAvailable(sel: ModelSelection | null): boolean {
+    if (!sel) return false
+    const all = provider.models()
+    // If providers haven't loaded yet, skip validation
+    if (all.length === 0) return true
+    return !!provider.findModel(sel)
+  }
+
+  function sendMessage(text: string, providerID?: string, modelID?: string, files?: FileAttachment[]): boolean {
     if (!server.isConnected()) {
       console.warn("[Kilo New] Cannot send message: not connected")
-      return
+      return false
+    }
+
+    const sel = providerID && modelID ? { providerID, modelID } : selected()
+    if (!isModelAvailable(sel)) {
+      showToast({
+        variant: "error",
+        title: language.t("prompt.toast.modelNotAvailable.title"),
+        description: language.t("prompt.toast.modelNotAvailable.description"),
+        persistent: true,
+        actions: [
+          {
+            label: language.t("prompt.toast.modelNotAvailable.action") ?? "Select Model",
+            onClick: openModelSelector,
+          },
+        ],
+      })
+      return false
     }
 
     const messageID = Identifier.ascending("message")
@@ -1135,7 +1167,7 @@ export const SessionProvider: ParentComponent = (props) => {
         variant: currentVariant(),
         files,
       })
-      return
+      return true
     }
 
     const sid = currentSessionID()
@@ -1190,6 +1222,7 @@ export const SessionProvider: ParentComponent = (props) => {
       variant: currentVariant(),
       files,
     })
+    return true
   }
 
   function abort() {
@@ -1545,6 +1578,7 @@ export const SessionProvider: ParentComponent = (props) => {
     deleteSession,
     renameSession,
     syncSession,
+    isModelAvailable,
     cloudPreviewId,
     selectCloudSession,
   }

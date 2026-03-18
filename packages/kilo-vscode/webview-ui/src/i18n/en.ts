@@ -256,6 +256,10 @@ export const dict = {
   "prompt.toast.shellSendFailed.title": "Failed to send shell command",
   "prompt.toast.commandSendFailed.title": "Failed to send command",
   "prompt.toast.promptSendFailed.title": "Failed to send prompt",
+  "prompt.toast.modelNotAvailable.title": "Model not available",
+  "prompt.toast.modelNotAvailable.description":
+    "The configured model is no longer available. Please select a different model.",
+  "prompt.toast.modelNotAvailable.action": "Select Model",
 
   "dialog.mcp.title": "MCPs",
   "dialog.mcp.description": "{{enabled}} of {{total}} enabled",

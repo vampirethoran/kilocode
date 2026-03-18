@@ -7,7 +7,17 @@
  * ModelSelector    — thin wrapper wired to session context for chat usage.
  */
 
-import { Component, createSignal, createMemo, createEffect, onCleanup, For, Show, createSelector } from "solid-js"
+import {
+  Component,
+  createSignal,
+  createMemo,
+  createEffect,
+  onCleanup,
+  onMount,
+  For,
+  Show,
+  createSelector,
+} from "solid-js"
 import { Popover } from "@kilocode/kilo-ui/popover"
 import { Button } from "@kilocode/kilo-ui/button"
 import { Tag } from "@kilocode/kilo-ui/tag"
@@ -39,6 +49,8 @@ export interface ModelSelectorBaseProps {
   clearLabel?: string
   /** Include the kilo-auto/small model in the list — defaults to false */
   includeAutoSmall?: boolean
+  /** Expose the open setter so callers can open the popover programmatically */
+  onReady?: (open: (v: boolean) => void) => void
 }
 
 export const ModelSelectorBase: Component<ModelSelectorBaseProps> = (props) => {
@@ -50,6 +62,9 @@ export const ModelSelectorBase: Component<ModelSelectorBaseProps> = (props) => {
   const [search, setSearch] = createSignal("")
   const [debouncedSearch, setDebouncedSearch] = createSignal("")
   const [selectedIndex, setSelectedIndex] = createSignal(0)
+
+  // Allow callers to open the popover programmatically
+  props.onReady?.(setOpen)
 
   let searchRef: HTMLInputElement | undefined
   let listRef: HTMLDivElement | undefined
@@ -314,6 +329,13 @@ export const ModelSelectorBase: Component<ModelSelectorBaseProps> = (props) => {
 
 export const ModelSelector: Component = () => {
   const session = useSession()
+  let opener: ((v: boolean) => void) | undefined
+
+  onMount(() => {
+    const handler = () => opener?.(true)
+    window.addEventListener("openModelSelector", handler)
+    onCleanup(() => window.removeEventListener("openModelSelector", handler))
+  })
 
   return (
     <ModelSelectorBase
@@ -321,6 +343,9 @@ export const ModelSelector: Component = () => {
       onSelect={(providerID, modelID) => {
         session.selectModel(providerID, modelID)
         requestAnimationFrame(() => window.dispatchEvent(new Event("focusPrompt")))
+      }}
+      onReady={(fn) => {
+        opener = fn
       }}
     />
   )

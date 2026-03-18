@@ -255,6 +255,9 @@ export const dict = {
   "prompt.toast.shellSendFailed.title": "ไม่สามารถส่งคำสั่งเชลล์",
   "prompt.toast.commandSendFailed.title": "ไม่สามารถส่งคำสั่ง",
   "prompt.toast.promptSendFailed.title": "ไม่สามารถส่งพร้อมท์",
+  "prompt.toast.modelNotAvailable.title": "โมเดลไม่พร้อมใช้งาน",
+  "prompt.toast.modelNotAvailable.description": "โมเดลที่กำหนดค่าไว้ไม่สามารถใช้งานได้อีกต่อไป กรุณาเลือกโมเดลอื่น",
+  "prompt.toast.modelNotAvailable.action": "เลือกโมเดล",
 
   "dialog.mcp.title": "MCPs",
   "dialog.mcp.description": "{{enabled}} จาก {{total}} ที่เปิดใช้งาน",
