@@ -467,6 +467,16 @@ export class KiloProvider implements vscode.WebviewViewProvider, TelemetryProper
         case "removeMode":
           this.handleRemoveMode(message.name).catch((e) => console.error("[Kilo New] handleRemoveMode failed:", e))
           break
+        case "createMode":
+          this.handleCreateMode(message.name, message.description, message.prompt).catch((e) =>
+            console.error("[Kilo New] handleCreateMode failed:", e),
+          )
+          break
+        case "updateMode":
+          this.handleUpdateMode(message.name, message.config).catch((e) =>
+            console.error("[Kilo New] handleUpdateMode failed:", e),
+          )
+          break
         case "questionReply":
           await this.handleQuestionReply(message.requestID, message.answers)
           break
@@ -1288,6 +1298,74 @@ export class KiloProvider implements vscode.WebviewViewProvider, TelemetryProper
 
     this.cachedAgentsMessage = null
     await this.fetchAndSendAgents()
+  }
+
+  /**
+   * Create a new custom mode by writing an agent config entry to the global config.
+   * After writing, dispose the CLI instance to force a re-read and refresh agents.
+   */
+  private async handleCreateMode(name: string, description: string, prompt: string): Promise<void> {
+    if (!this.client || this.connectionState !== "connected") {
+      this.postMessage({ type: "error", message: "Not connected to CLI backend" })
+      return
+    }
+
+    try {
+      await this.client.global.config.update(
+        {
+          config: {
+            agent: {
+              [name]: {
+                mode: "primary",
+                description,
+                prompt,
+              },
+            },
+          },
+        },
+        { throwOnError: true },
+      )
+
+      await this.disposeCliInstance("global")
+      this.cachedAgentsMessage = null
+      await this.fetchAndSendAgents()
+      await this.fetchAndSendConfig()
+    } catch (error) {
+      console.error("[Kilo New] KiloProvider: Failed to create mode:", error)
+      this.postMessage({ type: "error", message: `Failed to create mode: ${error}` })
+    }
+  }
+
+  /**
+   * Update an existing custom mode's config (prompt, description, model, etc.).
+   * After updating, dispose the CLI instance to force a re-read and refresh agents.
+   */
+  private async handleUpdateMode(name: string, partial: Record<string, unknown>): Promise<void> {
+    if (!this.client || this.connectionState !== "connected") {
+      this.postMessage({ type: "error", message: "Not connected to CLI backend" })
+      return
+    }
+
+    try {
+      await this.client.global.config.update(
+        {
+          config: {
+            agent: {
+              [name]: partial,
+            },
+          },
+        },
+        { throwOnError: true },
+      )
+
+      await this.disposeCliInstance("global")
+      this.cachedAgentsMessage = null
+      await this.fetchAndSendAgents()
+      await this.fetchAndSendConfig()
+    } catch (error) {
+      console.error("[Kilo New] KiloProvider: Failed to update mode:", error)
+      this.postMessage({ type: "error", message: `Failed to update mode: ${error}` })
+    }
   }
 
   /**

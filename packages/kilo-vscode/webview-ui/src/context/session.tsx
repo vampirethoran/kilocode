@@ -122,6 +122,8 @@ interface SessionContextValue {
 
   // Agent/mode selection (per-session)
   agents: Accessor<AgentInfo[]>
+  createMode: (name: string, description: string, prompt: string) => void
+  updateMode: (name: string, config: Record<string, unknown>) => void
   removeMode: (name: string) => void
   selectedAgent: Accessor<string>
   selectAgent: (name: string) => void
@@ -220,6 +222,14 @@ export const SessionProvider: ParentComponent = (props) => {
 
   // Skills loaded from the CLI backend
   const [skills, setSkills] = createSignal<SkillInfo[]>([])
+
+  const createMode = (name: string, description: string, prompt: string) => {
+    vscode.postMessage({ type: "createMode", name, description, prompt })
+  }
+
+  const updateMode = (name: string, cfg: Record<string, unknown>) => {
+    vscode.postMessage({ type: "updateMode", name, config: cfg })
+  }
 
   const removeMode = (name: string) => {
     setAgents((prev) => prev.filter((a) => a.name !== name))
@@ -1402,6 +1412,8 @@ export const SessionProvider: ParentComponent = (props) => {
     skills,
     refreshSkills,
     removeSkill,
+    createMode,
+    updateMode,
     removeMode,
     selectedAgent: selectedAgentName,
     selectAgent,

@@ -1362,6 +1362,19 @@ export interface RemoveModeMessage {
   name: string
 }
 
+export interface CreateModeMessage {
+  type: "createMode"
+  name: string
+  description: string
+  prompt: string
+}
+
+export interface UpdateModeMessage {
+  type: "updateMode"
+  name: string
+  config: Partial<AgentConfig> & { description?: string }
+}
+
 export interface SetLanguageRequest {
   type: "setLanguage"
   locale: string
@@ -1753,6 +1766,8 @@ export type WebviewMessage =
   | RequestSkillsMessage
   | RemoveSkillMessage
   | RemoveModeMessage
+  | CreateModeMessage
+  | UpdateModeMessage
   | SetLanguageRequest
   | QuestionReplyRequest
   | QuestionRejectRequest
