@@ -28,21 +28,21 @@ Checkpoints let you:
 ## Configuration Options
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 Access checkpoint settings in Kilo Code settings under the "Checkpoints" section:
 
-1. Open Settings by clicking the gear icon {% codicon name="gear" /%} â Checkpoints
+1. Open Settings by clicking the gear icon {% codicon name="gear" /%} → Checkpoints
 2. Check or uncheck the "Enable automatic checkpoints" checkbox
 
    {% image src="/docs/img/checkpoints/checkpoints.png" alt="Checkpoint settings in Kilo Code configuration" width="500" /%}
 
 {% /tab %}
-{% tab label="New Extension & CLI" %}
+{% tab label="VSCode (Pre-release) & CLI" %}
 
-Checkpoints are controlled by the `config.snapshot` boolean:
+Checkpoints are controlled by the `snapshot` boolean:
 
-- **Settings UI**: Open Settings â Checkpoints tab and toggle the snapshot setting
+- **Settings UI**: Open Settings → Checkpoints tab and toggle the snapshot setting
 - **Config file**: Set `"snapshot": true` or `"snapshot": false` in your `kilo.json` configuration file
 
 ```json
@@ -58,11 +58,9 @@ When enabled, the system automatically captures snapshots at each step of a task
 
 ## How Checkpoints Work
 
-Kilo Code captures snapshots of your project's state using a shadow Git repository, separate from your main version control system. These snapshots, called checkpoints, automatically record changes throughout your AI-assisted workflowâwhenever tasks begin, files change, or commands run.
+Kilo Code captures snapshots of your project's state using a shadow Git repository, separate from your main version control system. These snapshots, called checkpoints, automatically record changes throughout your AI-assisted workflow—whenever tasks begin, files change, or commands run.
 
-The shadow repository is stored at `~/.local/share/kilo/snapshot/<project-id>`, keeping checkpoint data completely isolated from your project directory.
-
-Checkpoints are stored as Git tree objects in the shadow repository, capturing:
+Checkpoints are stored as Git commits in the shadow repository, capturing:
 
 - File content changes
 - New files added
@@ -73,7 +71,7 @@ Checkpoints are stored as Git tree objects in the shadow repository, capturing:
 ## Working with Checkpoints
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 Checkpoints are integrated directly into your workflow through the chat interface.
 
@@ -121,7 +119,7 @@ To restore a project to a previous checkpoint state:
      {% image src="/docs/img/checkpoints/checkpoints-9.png" alt="Confirmation dialog for restoring checkpoint with files & task" width="300" /%}
 
 {% /tab %}
-{% tab label="New Extension & CLI" %}
+{% tab label="VSCode (Pre-release) & CLI" %}
 
 Checkpoints are captured automatically at each step of a task. The system calls `Snapshot.track()` at `start-step` and `finish-step` events, recording Git tree objects via `git write-tree`.
 
@@ -155,15 +153,15 @@ In the **Agent Manager** (VS Code extension), these diffs are displayed in a ded
 
 The checkpoint system consists of:
 
-1. **Shadow Git Repository**: A separate Git repository created at `~/.local/share/kilo/snapshot/<project-id>` specifically for checkpoint tracking that functions as the persistent storage mechanism for checkpoint state.
+1. **Shadow Git Repository**: A separate Git repository created specifically for checkpoint tracking that functions as the persistent storage mechanism for checkpoint state.
 
-2. **Snapshot Service**: Handles Git operations and state management through:
+2. **Checkpoint Service**: Handles Git operations and state management through:
    - Repository initialization
-   - Per-step snapshot creation via `git write-tree`
-   - Diff computation (`diff` and `diffFull`)
-   - State restoration and per-file revert
+   - Checkpoint creation and storage
+   - Diff computation
+   - State restoration
 
-3. **UI Components**: Interface elements displayed in the chat (Classic) or conversation view (CLI/Agent Manager) that enable interaction with checkpoints.
+3. **UI Components**: Interface elements displayed in the chat that enable interaction with checkpoints.
 
 ### Restoration Process
 
@@ -185,10 +183,6 @@ Checkpoint comparison uses Git's underlying diff capabilities to produce structu
 - Binary files are properly detected and handled
 - Renamed and moved files are tracked correctly
 - File creation and deletion are clearly identified
-
-### Automatic Cleanup
-
-The shadow repository is maintained automatically. An hourly scheduler runs `git gc --prune=7.days` to clean up old objects and keep the repository size manageable.
 
 ### File Exclusion and Ignore Patterns
 
@@ -245,7 +239,7 @@ Operations are queued to prevent concurrent Git operations that might corrupt re
 
 ## Git Installation
 
-Checkpoints require Git to be installed on your system. The implementation uses Git command-line tools to create and manage shadow repositories.
+Checkpoints require Git to be installed on your system. The implementation uses the `simple-git` library, which relies on Git command-line tools to create and manage shadow repositories.
 
 ### macOS
 

@@ -18,7 +18,7 @@ xAI is the company behind Grok, a large language model known for its conversatio
 ## Configuration in Kilo Code
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 1.  **Open Kilo Code Settings:** Click the gear icon ({% codicon name="gear" /%}) in the Kilo Code panel.
 2.  **Select Provider:** Choose "xAI" from the "API Provider" dropdown.
@@ -26,7 +26,7 @@ xAI is the company behind Grok, a large language model known for its conversatio
 4.  **Select Model:** Choose your desired Grok model from the "Model" dropdown.
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 Open **Settings** (gear icon) and go to the **Providers** tab to add xAI and enter your API key.
 

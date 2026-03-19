@@ -139,7 +139,7 @@ When you start a task in Kilo Code:
 ### Interaction with Other Rules
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 AGENTS.md works alongside Kilo Code's other configuration systems:
 
@@ -152,7 +152,7 @@ AGENTS.md works alongside Kilo Code's other configuration systems:
 | **[Custom Instructions](/docs/customize/custom-instructions)** | Global  | IDE settings              | Personal preferences across all projects  | 5 (Lowest)  |
 
 {% /tab %}
-{% tab label="New Extension & CLI" %}
+{% tab label="VSCode (Pre-release) & CLI" %}
 
 In the new platform, AGENTS.md is loaded alongside other instruction sources. The CLI also supports `.claude/` and `.agents/` directories for compatibility with other tools.
 
@@ -170,7 +170,7 @@ In the new platform, AGENTS.md is loaded alongside other instruction sources. Th
 ### Enabling/Disabling AGENTS.md
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 AGENTS.md support is **enabled by default**. To disable it, edit `settings.json`:
 
@@ -181,9 +181,9 @@ AGENTS.md support is **enabled by default**. To disable it, edit `settings.json`
 ```
 
 {% /tab %}
-{% tab label="New Extension & CLI" %}
+{% tab label="VSCode (Pre-release) & CLI" %}
 
-AGENTS.md is loaded automatically. To disable external agent files (`.claude/`, `.agents/` directories), set the environment variable:
+AGENTS.md is loaded automatically. To disable external skill directories (`.claude/skills/`, `.agents/skills/`), set the environment variable:
 
 ```bash
 export KILO_DISABLE_EXTERNAL_SKILLS=true

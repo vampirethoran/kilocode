@@ -1,6 +1,6 @@
 ---
 title: "Using Modes"
-description: "Understanding and using different modes (agents) in Kilo Code"
+description: "Understanding and using different modes in Kilo Code"
 ---
 
 # Using Modes
@@ -8,7 +8,7 @@ description: "Understanding and using different modes (agents) in Kilo Code"
 Modes in Kilo Code are specialized personas that tailor the assistant's behavior to your current task. Each mode offers different capabilities, expertise, and access levels to help you accomplish specific goals.
 
 {% callout type="info" %}
-The Classic Extension calls these **modes**, while the New Extension and CLI call them **agents**. The concept is the same—specialized personas with distinct tool access and behavior.
+The **VSCode** version calls these **modes**, while the **VSCode (Pre-release) & CLI** version calls them **agents**. The concept is the same—specialized personas with distinct tool access and behavior.
 {% /callout %}
 
 ## Why Use Different Modes?
@@ -21,7 +21,7 @@ The Classic Extension calls these **modes**, while the New Extension and CLI cal
 ## Switching Between Modes
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 {% youtube url="https://youtu.be/cS4vQfX528w" caption="Explaining the different modes in Kilo Code" /%}
 
@@ -31,18 +31,20 @@ Four ways to switch modes:
 
    {% image src="/docs/img/modes/modes.png" alt="Using the dropdown menu to switch modes" width="400" /%}
 
-2. **Slash command:** Type `/code`, `/architect`, `/ask`, or `/debug` in the chat input to switch modes. Type `/newtask` to create a new task, or `/smol` to condense your context window.
+2. **Slash command:** Type `/architect`, `/ask`, `/debug`, or `/code` in the chat input to switch modes. Type `/newtask` to create a new task, or `/smol` to condense your context window.
 
    {% image src="/docs/img/modes/modes-1.png" alt="Using slash commands to switch modes" width="400" /%}
 
-#### Understanding /newtask vs /smol
+### Understanding /newtask vs /smol
+
+Users often confuse `/newtask` and `/smol`. Here's the key difference:
 
 | Command    | Purpose                                               | When to Use                                                             |
 | ---------- | ----------------------------------------------------- | ----------------------------------------------------------------------- |
 | `/newtask` | Creates a new task with context from the current task | When you want to start something new while carrying over context        |
 | `/smol`    | Condenses your current context window                 | When your conversation is getting too long and you want to summarize it |
 
-3. **Keyboard shortcut:** Each press cycles through available modes in sequence.
+3. **Toggle command/Keyboard shortcut:** Use the keyboard shortcut below, applicable to your operating system. Each press cycles through the available modes in sequence, wrapping back to the first mode after reaching the end.
 
    | Operating System | Shortcut |
    | ---------------- | -------- |
@@ -55,7 +57,7 @@ Four ways to switch modes:
    {% image src="/docs/img/modes/modes-2.png" alt="Accepting a mode switch suggestion from Kilo Code" width="400" /%}
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 There are several ways to switch agents:
 
@@ -78,7 +80,7 @@ There are several ways to switch agents:
 ## Built-in Modes
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 ### Code Mode (Default)
 
@@ -139,16 +141,16 @@ There are several ways to switch agents:
 | **Special Features** | Code review before committing, surfacing feedback across performance, security, style, and test coverage                          |
 
 {% /tab %}
-{% tab label="New Extension & CLI" %}
+{% tab label="VSCode (Pre-release) & CLI" %}
 
 ### code (Default)
 
-| Aspect               | Details                                                                                                  |
-| -------------------- | -------------------------------------------------------------------------------------------------------- |
-| **Description**      | A skilled software engineer with expertise in programming languages, design patterns, and best practices |
-| **Tool Access**      | Full access to all tools: `read`, `edit`, `glob`, `grep`, `bash`, `task`, `webfetch`, `mcp`, etc.        |
-| **Ideal For**        | Writing code, implementing features, debugging, and general development                                  |
-| **Special Features** | No tool restrictions—full flexibility for all coding tasks                                               |
+| Aspect               | Details                                                                                                           |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| **Description**      | A skilled software engineer with expertise in programming languages, design patterns, and best practices          |
+| **Tool Access**      | Full access to all tools: `read`, `edit`, `glob`, `grep`, `bash`, `task`, `webfetch`, plus tools from MCP servers |
+| **Ideal For**        | Writing code, implementing features, debugging, and general development                                           |
+| **Special Features** | No tool restrictions—full flexibility for all coding tasks                                                        |
 
 ### ask
 
@@ -166,7 +168,7 @@ There are several ways to switch agents:
 | **Description**      | An experienced technical leader and planner who helps design systems and create implementation plans |
 | **Tool Access**      | Read-only tools plus restricted file editing (e.g., markdown files only)                             |
 | **Ideal For**        | System design, high-level planning, and architecture discussions                                     |
-| **Special Features** | Replaces the Classic Extension's "Architect" mode with similar planning-focused behavior             |
+| **Special Features** | Replaces the **VSCode** version's "Architect" mode with similar planning-focused behavior            |
 
 ### debug
 
@@ -187,7 +189,7 @@ There are several ways to switch agents:
 | **Special Features** | Delegates work to other agents; also has access to the **explore** subagent for codebase exploration                 |
 
 {% callout type="info" %}
-The New Extension and CLI do not include a built-in Review agent. Code review workflows can be handled by the **code** agent or via custom agent configurations.
+The **VSCode (Pre-release) & CLI** version does not include a built-in Review agent. Code review workflows can be handled by the **code** agent or via custom agent configurations.
 {% /callout %}
 
 {% /tab %}

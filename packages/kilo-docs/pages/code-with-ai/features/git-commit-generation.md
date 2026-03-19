@@ -54,7 +54,7 @@ Common types include:
 ## Configuration
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 ### Customizing the Commit Template
 
@@ -85,7 +85,7 @@ Consider creating a dedicated [API configuration profile](/docs/ai-providers) wi
 {% /callout %}
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 The new extension provides the same **SCM button** in the VS Code Source Control panel. Clicking it generates a commit message using the CLI backend's `client.commitMessage.generate()` API.
 

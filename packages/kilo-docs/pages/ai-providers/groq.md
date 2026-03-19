@@ -21,7 +21,7 @@ Kilo Code will attempt to fetch the list of available models from the Groq API.
 ## Configuration in Kilo Code
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 1.  **Open Kilo Code Settings:** Click the gear icon ({% codicon name="gear" /%}) in the Kilo Code panel.
 2.  **Select Provider:** Choose "Groq" from the "API Provider" dropdown.
@@ -29,7 +29,7 @@ Kilo Code will attempt to fetch the list of available models from the Groq API.
 4.  **Select Model:** Choose your desired model from the "Model" dropdown.
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 Open **Settings** (gear icon) and go to the **Providers** tab to add Groq and enter your API key.
 

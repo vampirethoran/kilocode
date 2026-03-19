@@ -5,10 +5,10 @@ description: "Get up and running with Kilo Code in minutes"
 
 # Quickstart
 
-After you [install Kilo Code](/docs/getting-started/installing) and [set up authentication](/docs/getting-started/setup-authentication), follow the guide for your platform below.
+After you [set up Kilo Code](/docs/getting-started/setup-authentication), follow the guide for your platform below.
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 ## Video Tour
 
@@ -70,7 +70,7 @@ Kilo Code works iteratively. After each action, it waits for your feedback befor
 {% image src="/docs/img/your-first-task/your-first-task-8.png" alt="Final result of a completed task showing the iteration process" width="500" caption="After completing the task, Kilo Code shows the final result and awaits your next instruction." /%}
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 ## Step by Step Guide
 
@@ -169,12 +169,20 @@ kilo run --auto "fix the failing tests in test/auth.test.ts"
 {% /tab %}
 {% /tabs %}
 
-## Next Steps
+## Conclusion
+
+You've completed your first task. Along the way you learned:
+
+- How to interact with Kilo Code using natural language
+- Why approval keeps you in control
+- How iteration lets the AI refine its work
+
+Ready for more? Here are some next steps:
 
 - **[Autocomplete](/docs/code-with-ai/features/autocomplete)** — Get inline code suggestions as you type
 - **[Modes](/docs/code-with-ai/agents/using-modes)** — Explore different modes for different tasks
 - **[Git commit generation](/docs/code-with-ai/features/git-commit-generation)** — Automatically generate commit messages
 
 {% callout type="tip" %}
-**Accelerate development:** Check out multiple copies of your repository and run Kilo Code on all of them in parallel (using git to resolve any conflicts, same as with human devs). This can dramatically speed up development on large projects. The [Agent Manager](/docs/automate/agent-manager) can help orchestrate this with git worktree isolation.
+**Accelerate development:** Check out multiple copies of your repository and run Kilo Code on all of them in parallel (using git to resolve any conflicts, same as with human devs). This can dramatically speed up development on large projects.
 {% /callout %}

@@ -5,10 +5,10 @@ description: "Integrate Kilo Code with your shell environment"
 
 # Terminal Shell Integration
 
-Terminal shell integration enables Kilo Code to execute commands and intelligently process their output. The Classic extension and the new extension & CLI handle shell execution differently — choose the tab that matches your setup.
+Terminal Shell Integration is a key feature that enables Kilo Code to execute commands in your terminal and intelligently process their output. This bidirectional communication between the AI and your development environment unlocks powerful automation capabilities.
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 ## What is Shell Integration?
 
@@ -344,7 +344,7 @@ The [VS Code Terminal Integration Test Extension](https://github.com/KJ7LNW/vsce
    - Open an issue with these details to help improve shell integration
 
 {% /tab %}
-{% tab label="New Extension & CLI" %}
+{% tab label="VSCode (Pre-release) & CLI" %}
 
 ## How Shell Execution Works
 
@@ -406,7 +406,7 @@ Right-click in an Agent Manager terminal to access these actions:
 
 ## Troubleshooting
 
-Shell execution in the new CLI is significantly simpler than the Classic extension's VS Code terminal integration. Most issues are resolved by ensuring:
+Shell execution in the new CLI is significantly simpler than the **VSCode** version's terminal integration. Most issues are resolved by ensuring:
 
 1. **A supported shell is installed**: bash or zsh on macOS/Linux, PowerShell on Windows
 2. **The shell is on your PATH**: The CLI needs to find the shell binary

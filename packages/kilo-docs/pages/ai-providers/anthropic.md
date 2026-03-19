@@ -18,7 +18,7 @@ Anthropic is an AI safety and research company that builds reliable, interpretab
 ## Configuration in Kilo Code
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 1.  **Open Kilo Code Settings:** Click the gear icon ({% codicon name="gear" /%}) in the Kilo Code panel.
 2.  **Select Provider:** Choose "Anthropic" from the "API Provider" dropdown.
@@ -27,7 +27,7 @@ Anthropic is an AI safety and research company that builds reliable, interpretab
 5.  **(Optional) Custom Base URL:** If you need to use a custom base URL for the Anthropic API, check "Use custom base URL" and enter the URL. Most people won't need to adjust this.
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 Open **Settings** (gear icon) and go to the **Providers** tab to add Anthropic and enter your API key.
 

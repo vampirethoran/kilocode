@@ -9,10 +9,10 @@ description: "Configure automatic approval settings for Kilo Code operations"
 **Security Warning:** Auto-approve settings bypass confirmation prompts, giving Kilo Code direct access to your system. This can result in data loss, file corruption, or worse. Command line access is particularly dangerous, as it can potentially execute harmful operations that could damage your system or compromise security. Only enable auto-approval for actions you fully trust.
 {% /callout %}
 
-Auto-approve settings speed up your workflow by eliminating repetitive confirmation prompts, but they significantly increase security risks. The Classic extension, new extension, and CLI each handle permissions differently — choose the tab that matches your setup.
+Auto-approve settings speed up your workflow by eliminating repetitive confirmation prompts, but they significantly increase security risks. The **VSCode**, **VSCode (Pre-release)**, and **CLI** versions each handle permissions differently — choose the tab that matches your setup.
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 ## Quick Start Guide
 
@@ -348,7 +348,7 @@ This is the fastest way to work with Kilo Code, but also the riskiest. Use it on
 {% /callout %}
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 ## Overview
 
@@ -365,6 +365,8 @@ Each tool permission can be set to one of three values:
 | `"allow"` | The tool runs automatically without prompting             |
 | `"ask"`   | Kilo pauses and asks for approval before running the tool |
 | `"deny"`  | The tool is blocked entirely                              |
+
+When no rule matches a permission check, the default action is `ask`.
 
 ## Available Tool Permissions
 
@@ -411,7 +413,7 @@ When a tool is set to `"ask"`, Kilo pauses and displays a permission request pop
 
 Most tools default to `"*": "allow"` for a smooth out-of-the-box experience. Notable exceptions that prompt by default:
 
-- **`.env` files** — reading or editing `.env` files prompts for approval
+- **`.env` files** — reading `.env` files prompts for approval. Files matching `*.env.*` (e.g., `.env.local`, `.env.production`) also trigger an ask, while `*.env.example` is explicitly allowed.
 - **`external_directory`** — accessing files outside the project prompts for approval
 - **`doom_loop`** — prompts when the agent enters a repeated failure cycle
 
@@ -431,6 +433,8 @@ Each tool permission can be set to one of three values:
 | `"allow"` | The tool runs automatically without prompting             |
 | `"ask"`   | Kilo pauses and asks for approval before running the tool |
 | `"deny"`  | The tool is blocked entirely                              |
+
+When no rule matches a permission check, the default action is `ask`.
 
 ## Available Tool Permissions
 
@@ -457,7 +461,7 @@ Permissions are configured under the `permission` key in `kilo.json`. The follow
 
 ## Glob-Pattern Rules
 
-Instead of a simple `"allow"` or `"deny"`, each tool can use glob-pattern rules for granular control. Patterns are matched against the tool's arguments (command strings, file paths, etc.), and the first matching rule wins.
+Instead of a simple `"allow"` or `"deny"`, each tool can use glob-pattern rules for granular control. Patterns are matched against the tool's arguments (command strings, file paths, etc.), and the last matching rule wins.
 
 ### Example: Shell Commands
 
@@ -547,11 +551,15 @@ When a tool is set to `"ask"`, Kilo pauses and displays a permission request pop
 
 Most tools default to `"*": "allow"` for a smooth out-of-the-box experience. Notable exceptions that prompt by default:
 
-- **`.env` files** — reading or editing `.env` files prompts for approval
+- **`.env` files** — reading `.env` files prompts for approval. Files matching `*.env.*` (e.g., `.env.local`, `.env.production`) also trigger an ask, while `*.env.example` is explicitly allowed.
 - **`external_directory`** — accessing files outside the project prompts for approval
 - **`doom_loop`** — prompts when the agent enters a repeated failure cycle
 
 ## Full Configuration Example
+
+{% callout type="info" %}
+This is a custom example showing the available configuration options — it does not represent the shipped defaults.
+{% /callout %}
 
 ```json
 {

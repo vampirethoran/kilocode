@@ -6,7 +6,7 @@ description: "Learn how to use the Kilo Code chat interface effectively"
 # Chatting with Kilo Code
 
 {% callout type="tip" %}
-**Bottom line:** Kilo Code is an AI coding assistant you chat with in plain English. It writes, edits, and explains code for you.
+**Bottom line:** Kilo Code is an AI coding assistant that lives in VS Code. You chat with it in plain English, and it writes, edits, and explains code for you.
 {% /callout %}
 
 {% callout type="note" title="Prefer quick completions?" %}
@@ -16,14 +16,14 @@ If you're typing code in the editor and want AI to finish your line or block, ch
 ## Quick Setup
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 Find the Kilo Code icon ({% kilo-code-icon /%}) in VS Code's Primary Side Bar. Click it to open the chat panel.
 
 **Lost the panel?** Go to View > Open View... and search for "Kilo Code"
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 Click the Kilo Code icon ({% kilo-code-icon /%}) in VS Code's Primary Side Bar to open the sidebar chat. You can also pop it out into an editor tab for a larger workspace.
 
@@ -50,7 +50,7 @@ Open your terminal and run `kilo` to launch the interactive TUI. You'll see a pr
 **What makes requests work:**
 
 - **Be specific** - "Fix the bug in `calculateTotal` that returns incorrect results" beats "Fix the code"
-- **Reference files** - Point Kilo to the files you're working with
+- **Use @ mentions** - Reference files and code directly with `@filename`
 - **One task at a time** - Break complex work into manageable steps
 - **Include examples** - Show the style or format you want
 
@@ -63,7 +63,7 @@ Open your terminal and run `kilo` to launch the interactive TUI. You'll see a pr
 ## The Chat Interface
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 {% image src="/docs/img/the-chat-interface/the-chat-interface-1.png" alt="Chat interface components labeled with callouts" width="800" caption="Everything you need is right here" /%}
 
@@ -87,7 +87,7 @@ Reference files and other context directly in your message using `@`:
 - `@commit` - Reference a specific commit
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 **Essential controls:**
 
@@ -98,7 +98,7 @@ Reference files and other context directly in your message using `@`:
 
 **Providing context:**
 
-The extension automatically passes context from your editor, including your open tabs, active file, selection, and diagnostics. You can also reference file paths directly in your message — no special `@` syntax required. Just mention the path naturally, like "update src/utils.ts to add a helper function."
+The extension automatically passes context from your editor, including your open tabs and active file. You can type `@` in the chat input to get file autocomplete suggestions, or mention file paths naturally in your message (e.g., "update src/utils.ts to add a helper function"). The agent can also discover files on its own using its built-in tools.
 
 {% /tab %}
 {% tab label="CLI" %}
@@ -112,7 +112,7 @@ The extension automatically passes context from your editor, including your open
 
 **Providing context:**
 
-Mention file paths directly in your message (e.g., "look at src/utils.ts") and the agent will read them. You can also use the `--file` flag when starting a session to explicitly include files. The agent has `glob`, `grep`, and `read` tools to discover files on its own.
+Type `@` in the TUI to get file autocomplete suggestions, or mention file paths directly in your message (e.g., "look at src/utils.ts") and the agent will read them. When using the non-interactive `kilo run` command, you can pass `-f path/to/file.ts` to explicitly include files (this flag is not available in the TUI). The agent also has `glob`, `grep`, and `read` tools to discover files on its own.
 
 {% /tab %}
 {% /tabs %}
@@ -137,7 +137,7 @@ Mention file paths directly in your message (e.g., "look at src/utils.ts") and t
 | Instead of this...                | Try this                                                                            |
 | --------------------------------- | ----------------------------------------------------------------------------------- |
 | "Fix the code"                    | "Fix the bug in `calculateTotal` that returns incorrect results"                    |
-| Assuming Kilo knows context       | Reference specific files so Kilo knows where to look                                |
+| Assuming Kilo knows context       | Use `@` to reference specific files                                                 |
 | Multiple unrelated tasks          | Submit one focused request at a time                                                |
 | Technical jargon overload         | Clear, straightforward language works best                                          |
 | Using chat for tiny code changes. | Use [autocomplete](/docs/code-with-ai/features/autocomplete) for inline completions |
@@ -149,20 +149,32 @@ Mention file paths directly in your message (e.g., "look at src/utils.ts") and t
 When Kilo Code needs more information to complete a task, it uses the [`ask_followup_question`](/docs/automate/tools/ask-followup-question) tool. To make responding easier and faster, Kilo Code often provides suggested answers alongside the question.
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 {% image src="/docs/img/suggested-responses/suggested-responses.png" alt="Example of Kilo Code asking a question with suggested response buttons below it" width="800" caption="Suggested responses appear as clickable buttons below questions" /%}
 
 **How it works:**
 
 1. **Question Appears** - Kilo Code asks a question using the `ask_followup_question` tool
-2. **Suggestions Displayed** - Suggested answers appear as clickable buttons below the question
-3. **Interaction** - You can interact with these suggestions in two ways:
-   - **Click** a button to send that answer immediately
-   - **Shift+Click** (or click the pencil icon {% codicon name="edit" /%}) to copy the suggestion into the input field so you can edit it before sending
+2. **Suggestions Displayed** - If suggestions are provided, they appear as buttons below the question
+3. **Interaction** - You can interact with these suggestions in two ways
+
+**Interacting with suggestions:**
+
+You have two options for using suggested responses:
+
+1. **Direct Selection**:
+   - **Action**: Simply click the button containing the answer you want to provide
+   - **Result**: The selected answer is immediately sent back to Kilo Code as your response. This is the quickest way to reply if one of the suggestions perfectly matches your intent.
+
+2. **Edit Before Sending**:
+   - **Action**:
+     - Hold down `Shift` and click the suggestion button
+     - _Alternatively_, hover over the suggestion button and click the pencil icon ({% codicon name="edit" /%}) that appears
+   - **Result**: The text of the suggestion is copied into the chat input box. You can then modify the text as needed before pressing Enter to send your customized response. This is useful when a suggestion is close but needs minor adjustments.
 
 {% /tab %}
-{% tab label="New Extension & CLI" %}
+{% tab label="VSCode (Pre-release) & CLI" %}
 
 **How it works:**
 
@@ -179,10 +191,12 @@ When Kilo Code needs more information to complete a task, it uses the [`ask_foll
 - **Clarity** - Suggestions often clarify the type of information Kilo Code needs
 - **Flexibility** - Edit suggestions to provide precise, customized answers when needed
 
+This feature streamlines the interaction when Kilo Code requires clarification, allowing you to guide the task effectively with minimal effort.
+
 ## Tips for Better Workflow
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 {% callout type="tip" %}
 **Move Kilo Code to the Secondary Side Bar** for a better layout. Right-click on the Kilo Code icon in the Activity Bar and select **Move To → Secondary Side Bar**. This lets you see the Explorer, Search, Source Control, etc. alongside Kilo Code.
@@ -195,14 +209,14 @@ When Kilo Code needs more information to complete a task, it uses the [`ask_foll
 {% /callout %}
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 {% callout type="tip" %}
 **Use agents instead of modes.** Switch between agents like Code, Ask, and Plan using the agent dropdown or slash commands. Each agent is tuned for a different type of task.
 {% /callout %}
 
 {% callout type="tip" %}
-**Your editor context is automatic.** The extension reads your open tabs, active file, selection, and diagnostics, so you don't need to manually reference every file. Focus your message on what you want done.
+**Your editor context is automatic.** The extension reads your open tabs and active file, so you don't need to manually reference every file. Focus your message on what you want done.
 {% /callout %}
 
 {% callout type="tip" %}
@@ -223,4 +237,4 @@ When Kilo Code needs more information to complete a task, it uses the [`ask_foll
 {% /tab %}
 {% /tabs %}
 
-Ready to start coding? Open the chat and describe what you want to build!
+Ready to start coding? Open the chat panel and describe what you want to build!

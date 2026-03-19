@@ -25,7 +25,7 @@ You can report any bugs or feedbacks by chatting with us in our [Discord server]
 ## Configuration in Kilo Code
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 1.  **Open Kilo Code Settings:** Click the gear icon ({% codicon name="gear" /%}) in the Kilo Code panel.
 2.  **Select Provider:** Choose "OVHcloud AI Endpoints" from the "API Provider" dropdown.
@@ -33,7 +33,7 @@ You can report any bugs or feedbacks by chatting with us in our [Discord server]
 4.  **Select Model:** Choose your desired model from the "Model" dropdown.
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 Open **Settings** (gear icon) and go to the **Providers** tab to add OVHcloud AI Endpoints and enter your API key.
 
@@ -47,7 +47,7 @@ Set the API key as an environment variable or configure it in your `kilo.json` c
 **Environment variable:**
 
 ```bash
-export OVH_AI_ENDPOINTS_ACCESS_TOKEN="your-api-key"
+export OVHCLOUD_API_KEY="your-api-key"
 ```
 
 **Config file** (`~/.config/kilo/kilo.json` or `./kilo.json`):
@@ -56,7 +56,7 @@ export OVH_AI_ENDPOINTS_ACCESS_TOKEN="your-api-key"
 {
   "provider": {
     "ovhcloud": {
-      "env": ["OVH_AI_ENDPOINTS_ACCESS_TOKEN"],
+      "env": ["OVHCLOUD_API_KEY"],
     },
   },
 }

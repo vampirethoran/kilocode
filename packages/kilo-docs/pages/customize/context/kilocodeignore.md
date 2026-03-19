@@ -9,10 +9,12 @@ description: "Control which files Kilo Code can access"
 
 `.kilocodeignore` is a root-level file that tells Kilo Code which files and folders it should not access. It uses standard `.gitignore` pattern syntax, but it only affects Kilo Code's file access, not Git.
 
+If no `.kilocodeignore` file exists, Kilo Code can access all files in the workspace.
+
 ## Quick Start
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 1. Create a `.kilocodeignore` file at the root of your project.
 2. Add patterns for files or folders you want Kilo Code to avoid.
@@ -36,7 +38,7 @@ coverage/
 ```
 
 {% /tab %}
-{% tab label="New Extension & CLI" %}
+{% tab label="VSCode (Pre-release) & CLI" %}
 
 The primary mechanism for controlling file access is the **permission system** in `kilo.json`. You define tool-level permissions with glob patterns:
 
@@ -55,10 +57,8 @@ You can also exclude paths from the file watcher separately using `config.watche
 
 ```json
 {
-  "config": {
-    "watcher": {
-      "ignore": ["tmp/**", "logs/**"]
-    }
+  "watcher": {
+    "ignore": ["tmp/**", "logs/**"]
   }
 }
 ```
@@ -80,7 +80,7 @@ Patterns are evaluated relative to the workspace root.
 ## What It Affects
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 Kilo Code checks `.kilocodeignore` before accessing files in tools like:
 
@@ -94,7 +94,7 @@ Kilo Code checks `.kilocodeignore` before accessing files in tools like:
 If a file is blocked, Kilo Code will return an "access denied" message and suggest updating your `.kilocodeignore` rules.
 
 {% /tab %}
-{% tab label="New Extension & CLI" %}
+{% tab label="VSCode (Pre-release) & CLI" %}
 
 File access is controlled through **permission-based access control**. Each tool (`read`, `edit`, `glob`, `grep`, `write`, `bash`, etc.) has its own permission rules evaluated against glob patterns.
 
@@ -112,7 +112,7 @@ If a file is denied by a permission rule, the tool will report that access was b
 ## Configuration Details
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 ### Visibility in Lists
 
@@ -121,11 +121,11 @@ By default, ignored files are hidden from file lists. You can show them with a l
 Settings -> Context -> **Show .kilocodeignore'd files in lists and searches**
 
 {% /tab %}
-{% tab label="New Extension & CLI" %}
+{% tab label="VSCode (Pre-release) & CLI" %}
 
 ### Permission Rules
 
-Permission rules are defined per-tool in `kilo.json`. Patterns are evaluated in order — the first matching rule wins:
+Permission rules are defined per-tool in `kilo.json`. Patterns are evaluated in order — the last matching rule wins:
 
 ```json
 {
@@ -154,10 +154,8 @@ The `config.watcher.ignore` setting controls which paths the file watcher skips.
 
 ```json
 {
-  "config": {
-    "watcher": {
-      "ignore": ["tmp/**", "logs/**", ".build/**"]
-    }
+  "watcher": {
+    "ignore": ["tmp/**", "logs/**", ".build/**"]
   }
 }
 ```

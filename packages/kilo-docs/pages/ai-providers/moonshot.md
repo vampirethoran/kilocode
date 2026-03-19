@@ -18,7 +18,7 @@ Moonshot.ai is a Chinese AI company known for their **Kimi** models featuring ul
 ## Configuration in Kilo Code
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 1. **Open Kilo Code Settings:** Click the gear icon ({% codicon name="gear" /%}) in the Kilo Code panel.
 2. **Select Provider:** Choose "Moonshot.ai" from the "API Provider" dropdown.
@@ -26,7 +26,7 @@ Moonshot.ai is a Chinese AI company known for their **Kimi** models featuring ul
 4. **Select Model:** Choose your desired model from the "Model" dropdown.
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 Open **Settings** (gear icon) and go to the **Providers** tab to add Moonshot.ai and enter your API key.
 
@@ -48,7 +48,7 @@ export MOONSHOT_API_KEY="your-api-key"
 ```jsonc
 {
   "provider": {
-    "moonshot": {
+    "moonshotai": {
       "env": ["MOONSHOT_API_KEY"],
     },
   },

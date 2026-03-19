@@ -9,7 +9,7 @@ Custom rules provide a powerful way to define project-specific and global behavi
 
 ## Overview
 
-Custom rules allow you to create text-based instructions that all AI models will follow when interacting with your project. These rules act as guardrails and conventions that are consistently respected across all interactions with your codebase.
+Custom rules allow you to create text-based instructions that all AI models will follow when interacting with your project. These rules act as guardrails and conventions that are consistently respected across all interactions with your codebase. Rules can be managed through both the file system and the built-in UI interface.
 
 ## Rule Format
 
@@ -29,11 +29,11 @@ Kilo Code supports two types of custom rules:
 ## Rule Location
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 ### Project Rules
 
-Custom rules are loaded from the **`.kilocode/rules/` directory**. Each rule is typically placed in its own Markdown file with a descriptive name:
+Custom rules are primarily loaded from the **`.kilocode/rules/` directory**. This is the recommended approach for organizing your project-specific rules. Each rule is typically placed in its own Markdown file with a descriptive name:
 
 ```
 project/
@@ -59,7 +59,7 @@ Global rules are stored in your home directory and apply to all projects:
 ```
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 ### Project Rules
 
@@ -133,10 +133,10 @@ The CLI is backward compatible with `.kilocode/rules/` directories. Existing rul
 {% /tab %}
 {% /tabs %}
 
-## Managing Rules
+## Managing Rules Through the UI
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 Kilo Code provides a built-in interface for managing your custom rules without manually editing files in the `.kilocode/rules/` directories. To access the UI, click on the <Codicon name="law" /> icon in the **bottom right corner** of the Kilo Code window.
 
@@ -152,7 +152,7 @@ The built-in rules management UI is available for general rules only. Mode-speci
 {% /callout %}
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 Rules are managed by editing the `instructions` array in your `kilo.json` config file. You can also use the **Settings** webview in VS Code to edit the configuration.
 
@@ -197,7 +197,7 @@ Rules are managed by editing the `instructions` array in your `kilo.json` config
 ## Rule Loading Order
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 ### General Rules (Any Mode)
 
@@ -213,7 +213,7 @@ Rules are loaded in the following priority order:
 When both global and project rules exist, they are combined with project rules taking precedence over global rules for conflicting directives.
 
 {% callout type="note" %}
-We strongly recommend keeping your rules in the `.kilocode/rules/` folder as it provides better organization and is the preferred approach for future versions. The legacy file-based approach is maintained for backward compatibility but may be removed in future releases.
+We strongly recommend keeping your rules in the `.kilocode/rules/` folder as it provides better organization and is the preferred approach for future versions. The legacy file-based approach is maintained for backward compatibility but may be subject to change in future releases.
 {% /callout %}
 
 ### Mode-Specific Rules
@@ -226,7 +226,7 @@ The system also supports mode-specific rules with their own priority order:
 Mode-specific rules are only supported at the project level. When both generic and mode-specific rules exist, mode-specific rules take priority.
 
 {% /tab %}
-{% tab label="New Extension & CLI" %}
+{% tab label="VSCode (Pre-release) & CLI" %}
 
 Rules are loaded in the order they appear in the `instructions` array in `kilo.json`:
 
@@ -245,7 +245,7 @@ If `.kilocode/rules/` directories exist in your project, their contents are auto
 ## Creating Custom Rules
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 ### Using the UI Interface
 
@@ -279,7 +279,7 @@ To create rules manually:
 Rules will be automatically applied to all future Kilo Code interactions. Any new changes will be applied immediately.
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 ### Using the Settings UI or Config File
 
@@ -399,7 +399,7 @@ If your custom rules aren't being properly followed:
 3. **Check rule locations**:
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 - **Check rule status in the UI**: Use the rules management interface to verify that your rules are active and properly loaded
 - Ensure rules are in supported locations:
@@ -409,7 +409,7 @@ If your custom rules aren't being properly followed:
 - **Restart VS Code** to ensure the rules are properly loaded
 
 {% /tab %}
-{% tab label="New Extension & CLI" %}
+{% tab label="VSCode (Pre-release) & CLI" %}
 
 - Verify that your `kilo.json` file is valid JSON (with comments)
 - Ensure the `instructions` paths resolve to existing files

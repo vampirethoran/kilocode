@@ -7,7 +7,7 @@ description: "Manage conversation context to optimize token usage and maintain l
 
 ## Overview
 
-When working on complex tasks, conversations with Kilo Code can grow long and consume a significant portion of the AI model's context window. Context management features intelligently summarize your conversation history, reducing token usage while preserving the essential information needed to continue your work effectively.
+When working on complex tasks, conversations with Kilo Code can grow long and consume a significant portion of the AI model's context window. **Context Condensing** is a feature that intelligently summarizes your conversation history, reducing token usage while preserving the essential information needed to continue your work effectively.
 
 ## The Problem: Context Window Limits
 
@@ -18,7 +18,7 @@ Every AI model has a maximum context window - a limit on how much text it can pr
 - Eventually hitting the context limit and being unable to continue
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 ## The Solution: Intelligent Condensing
 
@@ -85,7 +85,7 @@ If the condensed summary doesn't capture important details:
 - Important context can be reinforced after condensing by reminding Kilo Code of key details
 
 {% /tab %}
-{% tab label="New Extension & CLI" %}
+{% tab label="VSCode (Pre-release) & CLI" %}
 
 ## The Solution: Auto-Compaction
 
@@ -154,7 +154,7 @@ Compaction is configured in your `kilo.json` file:
 
 ## Best Practices
 
-### When to Condense or Compact
+### When to Condense
 
 - **Long sessions**: If you've been working for an extended period on a complex task
 - **Before major transitions**: When switching to a different aspect of your project
@@ -163,7 +163,7 @@ Compaction is configured in your `kilo.json` file:
 ### Maintaining Context Quality
 
 - **Be specific in your initial task**: A clear task description helps create better summaries
-- **Use AGENTS.md**: Combine with [AGENTS.md](/docs/customize/agents-md) for persistent project context that survives condensing or compaction
+- **Use AGENTS.md**: Combine with [AGENTS.md](/docs/customize/agents-md) for persistent project context that doesn't need to be condensed
 - **Review the summary**: After condensing or compaction, the summary is visible in your chat history
 
 ## Related Features

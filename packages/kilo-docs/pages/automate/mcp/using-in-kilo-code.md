@@ -1,24 +1,20 @@
 ---
-title: "Configuring MCP Servers"
-description: "How to configure and use MCP servers in Kilo Code"
+title: "Using MCP in Kilo Code"
+description: "How to use MCP servers in Kilo Code"
 ---
 
-# Configuring MCP Servers
+# Using MCP in Kilo Code
 
-Model Context Protocol (MCP) extends Kilo Code's capabilities by connecting to external tools and services. Once configured, MCP tools are automatically available to the LLM alongside built-in tools. This guide covers everything you need to know about configuring and using MCP servers.
-
-{% callout type="tip" %}
-MCP servers add to your context, so be careful with which ones you enable. Certain MCP servers with many tools can quickly add up and exceed the context limit. If you're not using MCP, turn it off to significantly cut down the size of the system prompt and improve performance.
-{% /callout %}
+Model Context Protocol (MCP) extends Kilo Code's capabilities by connecting to external tools and services. This guide covers everything you need to know about using MCP with Kilo Code.
 
 {% youtube url="https://youtu.be/6O9RQoQRX8A" caption="Demonstrating MCP installation in Kilo Code" /%}
 
-## Configuration Location
+## Configuring MCP Servers
 
 MCP server configurations can be managed at two levels: **global** (applies across all workspaces) and **project-level** (specific to a single project). Project-level configuration takes precedence over global settings.
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 | Scope       | Path                 | Description                                                     |
 | ----------- | -------------------- | --------------------------------------------------------------- |
@@ -28,7 +24,7 @@ MCP server configurations can be managed at two levels: **global** (applies acro
 Project-level configs can be committed to version control to share with your team.
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 In the VS Code extension, open **Settings → MCP** to add and manage MCP servers through the UI. Under the hood the extension reads the same config files as the CLI — see the **CLI** tab for file paths and format.
 
@@ -37,10 +33,10 @@ In the VS Code extension, open **Settings → MCP** to add and manage MCP server
 
 The CLI accepts several config filenames. The recommended file is `kilo.json`:
 
-| Scope       | Recommended Path                     | Also supported             |
-| ----------- | ------------------------------------ | -------------------------- |
-| **Global**  | `~/.config/kilo/kilo.json`           | `kilo.json`, `config.json` |
-| **Project** | `./kilo.json` or `./.kilo/kilo.json` | `kilo.json`                |
+| Scope       | Recommended Path                     | Also supported                                                 |
+| ----------- | ------------------------------------ | -------------------------------------------------------------- |
+| **Global**  | `~/.config/kilo/kilo.json`           | `kilo.jsonc`, `opencode.json`, `opencode.jsonc`, `config.json` |
+| **Project** | `./kilo.json` or `./.kilo/kilo.json` | `kilo.jsonc`, `opencode.jsonc`, `opencode.json`                |
 
 {% /tab %}
 {% /tabs %}
@@ -48,7 +44,7 @@ The CLI accepts several config filenames. The recommended file is `kilo.json`:
 ## Configuration Format
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 Both global and project-level files use a JSON format with a `mcpServers` object containing named server configurations:
 
@@ -71,7 +67,7 @@ Both global and project-level files use a JSON format with a `mcpServers` object
 _Example of MCP Server config in Kilo Code (STDIO Transport)_
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 In the VS Code extension, open **Settings → MCP** and click **Add Server** to configure a new server through the UI. You can also edit the config files directly — see the **CLI** tab for the JSON format.
 
@@ -97,11 +93,11 @@ You can disable a server by setting `enabled` to `false` without removing it fro
 {% /tab %}
 {% /tabs %}
 
-## Transport Types
+### Understanding Transport Types
 
-MCP supports different transport types for server communication.
+MCP supports three transport types for server communication:
 
-### STDIO / Local Servers
+#### STDIO Transport
 
 Used for local servers running on your machine:
 
@@ -113,8 +109,10 @@ Used for local servers running on your machine:
 
 For more in-depth information about how STDIO transport works, see [STDIO Transport](server-transports#stdio-transport).
 
+STDIO configuration example:
+
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 ```json
 {
@@ -133,7 +131,7 @@ For more in-depth information about how STDIO transport works, see [STDIO Transp
 ```
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 In the VS Code extension, open **Settings → MCP**, click **Add Server**, and choose **Local (stdio)**. Fill in the command, arguments, and optional environment variables through the UI. You can also edit the config files directly — see the **CLI** tab for the JSON format.
 
@@ -157,18 +155,18 @@ In the VS Code extension, open **Settings → MCP**, click **Add Server**, and c
 
 #### Local Server Options
 
-| Option        | Type    | Required | Description                                                          |
-| ------------- | ------- | -------- | -------------------------------------------------------------------- |
-| `type`        | String  | Yes      | Must be `"local"`.                                                   |
-| `command`     | Array   | Yes      | Command and arguments to run the MCP server.                         |
-| `environment` | Object  | No       | Environment variables to set when running the server.                |
-| `enabled`     | Boolean | No       | Enable or disable the MCP server on startup.                         |
-| `timeout`     | Number  | No       | Timeout in ms for fetching tools from the MCP server. Default: 5000. |
+| Option        | Type    | Required | Description                                                           |
+| ------------- | ------- | -------- | --------------------------------------------------------------------- |
+| `type`        | String  | Yes      | Must be `"local"`.                                                    |
+| `command`     | Array   | Yes      | Command and arguments to run the MCP server.                          |
+| `environment` | Object  | No       | Environment variables to set when running the server.                 |
+| `enabled`     | Boolean | No       | Enable or disable the MCP server on startup.                          |
+| `timeout`     | Number  | No       | Timeout in ms for fetching tools from the MCP server. Default: 30000. |
 
 {% /tab %}
 {% /tabs %}
 
-### Streamable HTTP / Remote Servers
+#### Streamable HTTP Transport
 
 Used for remote servers accessed over HTTP/HTTPS:
 
@@ -178,7 +176,7 @@ Used for remote servers accessed over HTTP/HTTPS:
 - Allows centralized deployment and management
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 ```json
 {
@@ -197,7 +195,7 @@ Used for remote servers accessed over HTTP/HTTPS:
 ```
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 In the VS Code extension, open **Settings → MCP**, click **Add Server**, and choose **Remote (HTTP)**. Enter the server URL and optional headers through the UI. You can also edit the config files directly — see the **CLI** tab for the JSON format.
 
@@ -221,24 +219,32 @@ In the VS Code extension, open **Settings → MCP**, click **Add Server**, and c
 
 #### Remote Server Options
 
-| Option    | Type    | Required | Description                                                          |
-| --------- | ------- | -------- | -------------------------------------------------------------------- |
-| `type`    | String  | Yes      | Must be `"remote"`.                                                  |
-| `url`     | String  | Yes      | URL of the remote MCP server.                                        |
-| `enabled` | Boolean | No       | Enable or disable the MCP server on startup.                         |
-| `headers` | Object  | No       | HTTP headers to send with requests.                                  |
-| `timeout` | Number  | No       | Timeout in ms for fetching tools from the MCP server. Default: 5000. |
+| Option    | Type    | Required | Description                                                           |
+| --------- | ------- | -------- | --------------------------------------------------------------------- |
+| `type`    | String  | Yes      | Must be `"remote"`.                                                   |
+| `url`     | String  | Yes      | URL of the remote MCP server.                                         |
+| `enabled` | Boolean | No       | Enable or disable the MCP server on startup.                          |
+| `headers` | Object  | No       | HTTP headers to send with requests.                                   |
+| `timeout` | Number  | No       | Timeout in ms for fetching tools from the MCP server. Default: 30000. |
 
 {% /tab %}
 {% /tabs %}
 
-### SSE Transport (Classic Extension Only)
+### SSE Transport
 
-{% callout type="warning" %}
-The SSE Transport has been deprecated as of MCP specification version 2025-03-26. Please use the Streamable HTTP / Remote transport instead.
-{% /callout %}
+    ⚠️ DEPRECATED: The SSE Transport has been deprecated as of MCP specification version 2025-03-26. Please use the HTTP Stream Transport instead, which implements the new Streamable HTTP transport specification.
 
-Used for remote servers accessed over HTTP/HTTPS via the Server-Sent Events protocol. For more in-depth information about how SSE transport works, see [SSE Transport](server-transports#sse-transport).
+Used for remote servers accessed over HTTP/HTTPS:
+
+- Communicates via Server-Sent Events protocol
+- Can be hosted on a different machine
+- Supports multiple client connections
+- Requires network access
+- Allows centralized deployment and management
+
+For more in-depth information about how SSE transport works, see [SSE Transport](server-transports#sse-transport).
+
+SSE configuration example:
 
 ```json
 {
@@ -258,7 +264,7 @@ Used for remote servers accessed over HTTP/HTTPS via the Server-Sent Events prot
 ## Managing MCP Servers
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 ### Editing MCP Settings Files
 
@@ -309,7 +315,7 @@ MCP tool auto-approval works on a per-tool basis and is disabled by default. To 
 When enabled, Kilo Code will automatically approve this specific tool without prompting. Note that the global "Use MCP servers" setting takes precedence - if it's disabled, no MCP tools will be auto-approved.
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 In the VS Code extension, manage MCP servers from **Settings → MCP**:
 
@@ -324,11 +330,13 @@ The extension also supports the `{env:VARIABLE_NAME}` syntax in config files to 
 
 ### CLI Commands
 
-| Command         | Description                     |
-| --------------- | ------------------------------- |
-| `kilo mcp list` | List all configured MCP servers |
-| `kilo mcp add`  | Add an MCP server               |
-| `kilo mcp auth` | Authenticate with an MCP server |
+| Command           | Description                     |
+| ----------------- | ------------------------------- |
+| `kilo mcp list`   | List all configured MCP servers |
+| `kilo mcp add`    | Add an MCP server               |
+| `kilo mcp auth`   | Authenticate with an MCP server |
+| `kilo mcp logout` | Log out from an MCP server      |
+| `kilo mcp debug`  | Debug an MCP server connection  |
 
 Inside the interactive TUI, use the `/mcps` slash command to toggle MCP servers on or off.
 
@@ -353,14 +361,14 @@ Use `{env:VARIABLE_NAME}` syntax in config files to reference environment variab
 {% /tab %}
 {% /tabs %}
 
-## Examples
+## Platform-Specific MCP Configuration Examples
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
-### Puppeteer (Windows)
+### Windows Configuration Example
 
-When setting up MCP servers on Windows, you'll need to use the Windows Command Prompt (`cmd`) to execute commands:
+When setting up MCP servers on Windows, you'll need to use the Windows Command Prompt (`cmd`) to execute commands. Here's an example of configuring a Puppeteer MCP server on Windows:
 
 ```json
 {
@@ -400,7 +408,7 @@ For macOS or Linux, you would use a different configuration:
 The same approach can be used for other MCP servers on Windows, adjusting the package name as needed for different server types.
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 In the VS Code extension, use **Settings → MCP → Add Server** to add any of the examples below through the UI. You can also edit the config files directly — see the **CLI** tab for the JSON format.
 
@@ -481,6 +489,10 @@ Example: "Analyze the performance of my API" might use an MCP tool that tests AP
 Common issues and solutions:
 
 - **Server Not Responding:** Check if the server process is running and verify network connectivity
-- **Permission Errors:** Ensure proper API keys and credentials are configured in your MCP config file
+- **Permission Errors:** Ensure proper API keys and credentials are configured in your `mcp_settings.json` (for global settings) or `.kilocode/mcp.json` (for project settings).
 - **Tool Not Available:** Confirm the server is properly implementing the tool and it's not disabled in settings
 - **Slow Performance:** Try adjusting the network timeout value for the specific MCP server
+
+{% callout type="tip" %}
+**Reduce system prompt size:** If you're not using MCP, turn it off in Settings > Agent Behaviour > MCP Servers to significantly cut down the size of the system prompt and improve performance.
+{% /callout %}

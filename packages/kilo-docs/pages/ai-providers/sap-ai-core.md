@@ -78,7 +78,7 @@ The exact list of available models depends on your SAP AI Core configuration and
 ## Configuration in Kilo Code
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 1. **Open Kilo Code Settings:** Click the gear icon ({% codicon name="gear" /%}) in the Kilo Code panel.
 2. **Select Provider:** Choose "SAP AI Core" from the "API Provider" dropdown.
@@ -95,7 +95,7 @@ The exact list of available models depends on your SAP AI Core configuration and
 6. **Select Deployment:** (Foundation Models Mode only) Choose an active deployment for your selected model
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 Open **Settings** (gear icon) and go to the **Providers** tab to add SAP AI Core. Enter your OAuth2 client credentials (Client ID, Client Secret, Base URL, and Auth URL) in the provider settings.
 
@@ -109,10 +109,9 @@ SAP AI Core uses OAuth2 client credentials for authentication. Set the credentia
 **Environment variables:**
 
 ```bash
-export SAP_AI_CORE_CLIENT_ID="your-client-id"
-export SAP_AI_CORE_CLIENT_SECRET="your-client-secret"
-export SAP_AI_CORE_BASE_URL="https://api.ai.ml.hana.ondemand.com"
-export SAP_AI_CORE_AUTH_URL="https://your-subdomain.authentication.sap.hana.ondemand.com"
+export AICORE_SERVICE_KEY='{"your": "service-key-json"}'
+export AICORE_DEPLOYMENT_ID="your-deployment-id"
+export AICORE_RESOURCE_GROUP="your-resource-group"
 ```
 
 **Config file** (`~/.config/kilo/kilo.json` or `./kilo.json`):

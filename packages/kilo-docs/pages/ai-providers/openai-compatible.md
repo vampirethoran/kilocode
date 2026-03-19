@@ -15,7 +15,7 @@ This document focuses on setting up providers _other than_ the official OpenAI A
 ## General Configuration
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 The key to using an OpenAI-compatible provider is to configure two main settings:
 
@@ -38,7 +38,7 @@ You'll find these settings in the Kilo Code settings panel (click the {% codicon
   - Output Price
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 Open **Settings** (gear icon) and go to the **Providers** tab to add an OpenAI Compatible provider. Enter your API key and the provider's base URL.
 

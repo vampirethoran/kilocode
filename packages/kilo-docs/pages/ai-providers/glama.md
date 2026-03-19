@@ -27,7 +27,7 @@ Refer to the [Glama documentation](https://glama.ai/models) for the most up-to-d
 ## Configuration in Kilo Code
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 1.  **Open Kilo Code Settings:** Click the gear icon ({% codicon name="gear" /%}) in the Kilo Code panel.
 2.  **Select Provider:** Choose "Glama" from the "API Provider" dropdown.
@@ -35,7 +35,7 @@ Refer to the [Glama documentation](https://glama.ai/models) for the most up-to-d
 4.  **Select Model:** Choose your desired model from the "Model" dropdown.
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 Open **Settings** (gear icon) and go to the **Providers** tab to add Glama and enter your API key.
 
@@ -43,6 +43,8 @@ The extension stores this in your `kilo.json` config file. You can also edit the
 
 {% /tab %}
 {% tab label="CLI" %}
+
+{% callout type="warning" %}Glama is not yet available as a CLI provider. Check the [Kilo Code releases](https://github.com/Kilo-Org/kilocode/releases) for updates on provider support.{% /callout %}
 
 Set the API key as an environment variable or configure it in your `kilo.json` config file:
 

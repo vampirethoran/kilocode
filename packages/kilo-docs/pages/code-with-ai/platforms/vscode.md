@@ -5,10 +5,10 @@ description: "Using Kilo Code in Visual Studio Code"
 
 # VS Code Extension
 
-Kilo Code is available as two VS Code extensions: the **Classic** stable release (v5.x) and the **New** pre-release (v7.x+) built on the Kilo CLI core.
+Kilo Code is available as two VS Code extensions: the **VSCode** stable release and the **VSCode (Pre-release)** version built on the Kilo CLI core.
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 ## Installation
 
@@ -28,7 +28,7 @@ Kilo Code is available as two VS Code extensions: the **Classic** stable release
 - **[Checkpoints](/docs/code-with-ai/features/checkpoints)** — Git-based snapshots for undo/redo
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 ## Installation
 
@@ -41,7 +41,7 @@ The extension bundles its own CLI binary and spawns `kilo serve` as a background
 
 ## Key Features
 
-Everything in the Classic extension, plus:
+Key features include:
 
 - **SolidJS-based UI** — Rebuilt sidebar with a modern component architecture
 - **[JSONC config files](/docs/getting-started/settings)** — Portable settings in `kilo.json` instead of VS Code settings
@@ -54,7 +54,7 @@ Everything in the Classic extension, plus:
 - **[Custom Subagents](/docs/customize/custom-subagents)** — Define specialized sub-agents for the `task` tool
 - **Open in Tab** — Pop the chat out into a full editor tab
 - **Sub-Agent Viewer** — Read-only panels for viewing child agent sessions
-- **Legacy Migration** — Automatic migration wizard for Classic extension settings
+- **Legacy Migration** — Automatic migration wizard for VSCode extension settings
 
 ## Shared Settings
 

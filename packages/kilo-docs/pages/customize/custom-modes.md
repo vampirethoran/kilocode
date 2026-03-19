@@ -1,25 +1,25 @@
 ---
-title: "Custom Modes & Agents"
-description: "Create and configure custom modes (Classic) or agents (New Extension & CLI) in Kilo Code"
+title: "Custom Modes"
+description: "Create and configure custom modes in Kilo Code"
 ---
 
-# Custom Modes & Agents
+# Custom Modes
 
-Kilo Code allows you to create custom behavioral profiles to tailor Kilo's behavior to specific tasks or workflows. In the **Classic Extension** these are called **modes**; in the **New Extension & CLI** they are called **agents**. Both can be **global** (available across all projects) or **project-specific**.
+Kilo Code allows you to create **custom modes** to tailor Kilo's behavior to specific tasks or workflows. Custom modes can be either **global** (available across all projects) or **project-specific** (defined within a single project).
 
-## Why Customize?
+## Why Use Custom Modes?
 
-- **Specialization:** Create profiles optimized for specific tasks, like "Documentation Writer," "Test Engineer," or "Refactoring Expert"
-- **Safety:** Restrict access to sensitive files or commands. For example, a "Review" profile could be limited to read-only operations
-- **Experimentation:** Safely experiment with different prompts and configurations without affecting other profiles
-- **Team Collaboration:** Share custom configurations with your team to standardize workflows
+- **Specialization:** Create modes optimized for specific tasks, like "Documentation Writer," "Test Engineer," or "Refactoring Expert"
+- **Safety:** Restrict a mode's access to sensitive files or commands. For example, a "Review Mode" could be limited to read-only operations
+- **Experimentation:** Safely experiment with different prompts and configurations without affecting other modes
+- **Team Collaboration:** Share custom modes with your team to standardize workflows
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 ## Sticky Models for Efficient Workflow
 
-Each mode — including custom ones — features **Sticky Models**. Kilo Code automatically remembers and selects the last model you used with a particular mode, letting you assign different preferred models to different tasks without constant reconfiguration.
+Each mode—including custom ones—features **Sticky Models**. This means Kilo Code automatically remembers and selects the last model you used with a particular mode. This lets you assign different preferred models to different tasks without constant reconfiguration, as Kilo switches between models when you change modes.
 
 {% callout type="tip" %}
 **Keep custom modes on track:** Limit the types of files that they're allowed to edit using the `fileRegex` option in the `groups` configuration. This prevents modes from accidentally modifying files outside their intended scope.
@@ -31,9 +31,9 @@ _Kilo Code's interface for creating and managing custom modes._
 
 ## What's Included in a Custom Mode?
 
-Custom modes are defined by several key properties:
+Custom modes are defined by several key properties. Understanding these concepts will help you tailor Kilo's behavior effectively.
 
-| UI Field / YAML Property                       | Description                                                                                                                                                                          |
+| UI Field / YAML Property                       | Conceptual Description                                                                                                                                                               |
 | ---------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **Slug** (`slug`)                              | A unique internal identifier for the mode. Used by Kilo Code to reference the mode, especially for associating mode-specific instruction files.                                      |
 | **Name** (`name`)                              | The display name for the mode as it appears in the Kilo Code user interface. Should be human-readable and descriptive.                                                               |
@@ -51,7 +51,7 @@ If you find that models aren't following your custom mode's role definition or i
 
 ## Import/Export Modes
 
-Easily share, back up, and template your custom modes. This feature lets you export any mode — and its associated rules — into a single, portable YAML file that you can import into any project.
+Easily share, back up, and template your custom modes. This feature lets you export any mode—and its associated rules—into a single, portable YAML file that you can import into any project.
 
 ### Key Features
 
@@ -122,7 +122,7 @@ The interface provides fields for Name, Slug, Description, Save Location, Role D
 
 ### 3. Manual Configuration (YAML & JSON)
 
-You can directly edit the configuration files to create or modify custom modes. This method offers the most control over all properties. Kilo Code supports both YAML (preferred) and JSON formats.
+You can directly edit the configuration files to create or modify custom modes. This method offers the most control over all properties. Kilo Code now supports both YAML (preferred) and JSON formats.
 
 - **Global Modes:** Edit `custom_modes.yaml` (primary). `custom_modes.json` is a legacy fallback and may still exist in older setups.
 - **Project Modes:** Edit `.kilocodemodes` in your project root (YAML preferred; JSON still supported for compatibility).
@@ -134,11 +134,9 @@ These files define an array/list of custom modes.
 If you see both YAML and JSON mode files, this is usually from legacy configuration. Kilo Code reads YAML first and does not keep both files synchronized line-by-line. In practice, edit YAML unless you have a specific reason to stay on JSON.
 {% /callout %}
 
-## Configuration Format
+## YAML Configuration Format (Preferred)
 
-### YAML Format (Preferred)
-
-YAML is the preferred format for defining custom modes due to better readability, comment support, and cleaner multi-line strings.
+YAML is now the preferred format for defining custom modes due to better readability, comment support, and cleaner multi-line strings.
 
 ```yaml
 customModes:
@@ -177,7 +175,7 @@ customModes:
 }
 ```
 
-## Property Reference
+## YAML/JSON Property Details
 
 ### `slug`
 
@@ -285,7 +283,7 @@ customInstructions: |-
 
 ## Benefits of YAML Format
 
-YAML is the preferred format for defining custom modes due to several advantages:
+YAML is now the preferred format for defining custom modes due to several advantages:
 
 - **Readability:** YAML's indentation-based structure is easier for humans to read and understand
 - **Comments:** YAML allows for comments (lines starting with `#`), making it possible to annotate your mode definitions
@@ -356,7 +354,7 @@ Mode configurations are applied in this order:
 
 ## Overriding Default Modes
 
-You can override Kilo Code's built-in modes (like Code, Debug, Ask, Architect, Orchestrator) by creating a custom mode with the same slug.
+You can override Kilo Code's built-in modes (like 💻 Code, 🪲 Debug, ❓ Ask, 🏗️ Architect, 🪃 Orchestrator) by creating a custom mode with the same slug.
 
 ### Global Override Example
 
@@ -392,7 +390,7 @@ customModes:
 ```
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 In the new extension, custom behavioral profiles are called **agents** instead of modes. Agents are defined as Markdown files with YAML frontmatter or as entries in the `agent` key of your config file.
 
@@ -588,9 +586,9 @@ permission:
 You are a Python specialist. Only edit Python files.
 ```
 
-## Migration from Classic Extension Modes
+## Migration from VSCode Extension Modes
 
-If you have existing `.kilocodemodes` or `custom_modes.yaml` files from the Classic extension, the new extension automatically migrates them on startup. The migration converts:
+If you have existing `.kilocodemodes` or `custom_modes.yaml` files from the VSCode extension, the new extension automatically migrates them on startup. The migration converts:
 
 - `slug` to the agent name (key)
 - `roleDefinition` + `customInstructions` to `prompt`
@@ -598,7 +596,7 @@ If you have existing `.kilocodemodes` or `custom_modes.yaml` files from the Clas
 - `whenToUse` / `description` to `description`
 - Mode is set to `primary`
 
-Built-in mode slugs (`code`, `architect`, `ask`, `debug`, `orchestrator`) are skipped since they have native agent equivalents.
+Built-in mode slugs (`code`, `ask`, `debug`, `orchestrator`) are skipped since they have native agent equivalents.
 
 {% /tab %}
 {% tab label="CLI" %}
@@ -803,9 +801,9 @@ permission:
 You are a Python specialist. Only edit Python files.
 ```
 
-## Migration from Classic Extension Modes
+## Migration from VSCode Extension Modes
 
-If you have existing `.kilocodemodes` or `custom_modes.yaml` files from the Classic extension, the CLI automatically migrates them on startup. The migration converts:
+If you have existing `.kilocodemodes` or `custom_modes.yaml` files from the VSCode extension, the CLI automatically migrates them on startup. The migration converts:
 
 - `slug` to the agent name (key)
 - `roleDefinition` + `customInstructions` to `prompt`
@@ -813,20 +811,20 @@ If you have existing `.kilocodemodes` or `custom_modes.yaml` files from the Clas
 - `whenToUse` / `description` to `description`
 - Mode is set to `primary`
 
-Built-in mode slugs (`code`, `architect`, `ask`, `debug`, `orchestrator`) are skipped since they have native agent equivalents.
+Built-in mode slugs (`code`, `ask`, `debug`, `orchestrator`) are skipped since they have native agent equivalents.
 
 {% /tab %}
 {% /tabs %}
 
-## Understanding Regex & File Permissions
+## Understanding Regex in Custom Modes
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
-Regular expressions (`fileRegex`) in the Classic extension offer fine-grained control over file editing permissions within tool groups.
+Regular expressions (`fileRegex`) in the **VSCode** version offer fine-grained control over file editing permissions within tool groups.
 
 {% /tab %}
-{% tab label="New Extension & CLI" %}
+{% tab label="VSCode (Pre-release) & CLI" %}
 
 The new extension and CLI use **permission rules with glob patterns** instead of regex. Permissions are defined per-tool (e.g., `edit`, `bash`, `read`) and support `allow`, `deny`, and `ask` actions with glob matching:
 
@@ -837,26 +835,26 @@ permission:
     deny: "*"
 ```
 
-The Classic extension's `fileRegex` approach is automatically converted to permission rules during migration.
+The **VSCode** version's `fileRegex` approach is automatically converted to permission rules during migration.
 
 {% /tab %}
 {% /tabs %}
 
 {% callout type="tip" %}
 
-**Let Kilo Build Your Patterns**
+**Let Kilo Build Your Regex Patterns**
 
-Instead of writing complex patterns manually, ask Kilo:
+Instead of writing complex regex manually, ask Kilo:
 
 ```
 Create a regex pattern that matches JavaScript files but excludes test files
 ```
 
-Kilo will generate the appropriate pattern for your platform (regex for Classic, glob permissions for New Extension & CLI).
+Kilo will generate the pattern. Remember to adapt it for YAML (usually single backslashes) or JSON (double backslashes).
 
 {% /callout %}
 
-### Important Rules for `fileRegex` (Classic Extension)
+### Important Rules for `fileRegex`
 
 - **Escaping in JSON:** In JSON strings, backslashes (`\`) must be double-escaped (e.g., `\\.md$`)
 - **Escaping in YAML:** In unquoted or single-quoted YAML strings, a single backslash is usually sufficient for regex special characters (e.g., `\.md$`)
@@ -864,7 +862,7 @@ Kilo will generate the appropriate pattern for your platform (regex for Classic,
 - **Case Sensitivity:** Regex patterns are case-sensitive by default
 - **Validation:** Invalid regex patterns are rejected with an "Invalid regular expression pattern" error message
 
-### Common Regex Pattern Examples (Classic Extension)
+### Common Pattern Examples
 
 | Pattern (YAML-like)              | JSON fileRegex Value                | Matches                                   | Doesn't Match                      |
 | -------------------------------- | ----------------------------------- | ----------------------------------------- | ---------------------------------- |
@@ -885,12 +883,18 @@ Kilo will generate the appropriate pattern for your platform (regex for Classic,
 
 ## Error Handling
 
-When an agent or mode attempts to edit a file outside its allowed scope, the system will block the action. In the Classic Extension this produces a `FileRestrictionError` including the mode name, allowed pattern, description, attempted path, and blocked tool. In the new extension and CLI, permission denials are surfaced inline with the tool that was blocked.
+When a mode attempts to edit a file that doesn't match its `fileRegex` pattern, you'll see a `FileRestrictionError` that includes:
+
+- The mode name
+- The allowed file pattern
+- The description (if provided)
+- The attempted file path
+- The tool that was blocked
 
 ## Example Configurations
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 ### Basic Documentation Writer (YAML)
 
@@ -946,7 +950,7 @@ customModes:
 ```
 
 {% /tab %}
-{% tab label="New Extension & CLI" %}
+{% tab label="VSCode (Pre-release) & CLI" %}
 
 ### Basic Documentation Writer (`.kilo/agents/docs-writer.md`)
 
@@ -1038,7 +1042,7 @@ Focus on:
 ## Troubleshooting
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 ### Common Issues
 
@@ -1055,7 +1059,7 @@ Focus on:
 - **Validate Your YAML:** Use online YAML validators or your editor's built-in validation
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 ### Common Issues
 

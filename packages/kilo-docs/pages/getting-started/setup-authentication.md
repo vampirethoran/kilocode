@@ -5,12 +5,12 @@ description: "Configure Kilo Code and connect to your AI providers"
 
 # Setup & Authentication
 
+When you install Kilo Code, you'll be prompted to sign in or create a free account. This automatically configures everything you need to get started.
+
 ## Quick Start with Kilo Account
 
-The fastest way to get started is with a free Kilo account, which gives you access to the Kilo provider and credits.
-
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 1. Click **"Try Kilo Code for Free"** in the extension
 2. Sign in with your Google account
@@ -21,7 +21,7 @@ The fastest way to get started is with a free Kilo account, which gives you acce
 That's it! You're ready to [start your first task](/docs/getting-started/quickstart).
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 The pre-release extension prompts you to sign in when you first open the sidebar. Click **Sign In** and complete the browser-based flow. The extension communicates with the CLI backend, so authentication is shared between the CLI and extension.
 
@@ -34,7 +34,7 @@ Run the auth command and follow the browser-based sign-in flow:
 kilo auth login
 ```
 
-This opens your browser to complete authentication. Once signed in, your credentials are stored locally and used for all future sessions.
+This may open your browser to complete authentication. Once signed in, your credentials are stored locally and used for all future sessions.
 
 To verify your auth status:
 
@@ -60,7 +60,7 @@ If you're using the [Kilo AI Gateway](/docs/gateway/) outside of the Kilo Code e
 
 ## Using Another API Provider
 
-If you prefer to use your own API key or existing subscription, Kilo Code supports many providers. Here are some popular options to get started:
+If you prefer to use your own API key or existing subscription, Kilo Code supports **over 30 providers**. Here are some popular options to get started:
 
 | Provider                                                       | Best For                            | API Key Required |
 | -------------------------------------------------------------- | ----------------------------------- | ---------------- |
@@ -104,7 +104,7 @@ Already have a ChatGPT subscription? You can use it with Kilo Code through the [
 ### Configuring Your Provider
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 1. Click the {% kilo-code-icon /%} icon in the VS Code sidebar
 2. Select your API provider from the dropdown
@@ -113,7 +113,7 @@ Already have a ChatGPT subscription? You can use it with Kilo Code through the [
 5. Click **"Let's go!"**
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 1. Open the Kilo Code sidebar in VS Code
 2. Click the gear icon ({% codicon name="gear" /%}) to open **Settings**

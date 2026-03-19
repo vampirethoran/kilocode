@@ -5,12 +5,12 @@ description: "Configure Kilo Code settings and preferences"
 
 # Settings
 
-Kilo Code offers multiple platforms, each with its own approach to configuration. The **Classic Extension** uses the VS Code settings UI with export/import/reset workflows. The **New Extension** provides a Settings webview that reads and writes to JSONC config files. The **CLI** uses portable JSONC config files directly.
+Kilo Code offers multiple platforms, each with its own approach to configuration. The **VSCode** version uses the VS Code settings UI with export/import/reset workflows. The **VSCode (Pre-release)** version provides a Settings webview that reads and writes to JSONC config files. The **CLI** uses portable JSONC config files directly.
 
 ## Managing Settings
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 Kilo Code allows you to manage your configuration settings effectively through export, import, and reset options. These features are useful for backing up your setup, sharing configurations with others, or restoring default settings if needed.
 
@@ -65,7 +65,7 @@ Clicking the **Reset** button completely clears all Kilo Code configuration data
 Use this option only if you are certain you want to remove all Kilo Code data or if instructed during troubleshooting. Consider exporting your settings first if you might want to restore them later.
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 The VS Code extension provides a **Settings webview UI** accessible from the extension sidebar by clicking the gear icon ({% codicon name="gear" /%}). The UI is organized into tabs including Providers, Auto-Approve, Models, and more.
 
@@ -82,7 +82,7 @@ There are two primary config files:
 
 Settings are resolved through an 8-level precedence system (lowest to highest priority):
 
-1. **Legacy Kilocode** -- migrated settings from the Classic extension
+1. **Legacy Kilocode** -- migrated settings from the VSCode extension
 2. **Remote well-known** -- remotely fetched defaults
 3. **Global** -- `~/.config/kilo/kilo.json`
 4. **Custom** -- additional custom config paths
@@ -115,7 +115,7 @@ Both files use the [JSONC](https://code.visualstudio.com/docs/languages/json#_js
 
 Settings are resolved through an 8-level precedence system (lowest to highest priority):
 
-1. **Legacy Kilocode** -- migrated settings from the Classic extension
+1. **Legacy Kilocode** -- migrated settings from the VSCode extension
 2. **Remote well-known** -- remotely fetched defaults
 3. **Global** -- `~/.config/kilo/kilo.json`
 4. **Custom** -- additional custom config paths
@@ -162,7 +162,7 @@ For **session** export and import, use the CLI commands:
 ## Experimental Features
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 {% callout type="info" %}
 These features are experimental and may change in future releases. They provide advanced control over Kilo Code's behavior for specific use cases.
@@ -213,14 +213,14 @@ This setting controls the number of lines read from a file in one batch. To mana
 You can find this setting in the Kilo Code settings under 'Advanced Settings'.
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
-The new extension does not currently expose the same experimental feature toggles as the Classic Extension. Advanced options are configured via the JSONC config files that the Settings webview reads and writes. Refer to the auto-generated `$schema` in your `kilo.json` for the full list of available options.
+The new extension does not currently expose the same experimental feature toggles as the **VSCode** version. Advanced options are configured via the JSONC config files that the Settings webview reads and writes. Refer to the auto-generated `$schema` in your `kilo.json` for the full list of available options.
 
 {% /tab %}
 {% tab label="CLI" %}
 
-The CLI does not currently expose the same experimental feature toggles as the Classic Extension. Configuration of model behavior, file editing strategies, and other advanced options is handled directly in the JSONC config files. Refer to the auto-generated `$schema` in your `kilo.json` for the full list of available options.
+The CLI does not currently expose the same experimental feature toggles as the **VSCode** version. Configuration of model behavior, file editing strategies, and other advanced options is handled directly in the JSONC config files. Refer to the auto-generated `$schema` in your `kilo.json` for the full list of available options.
 
 {% /tab %}
 {% /tabs %}

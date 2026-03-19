@@ -17,7 +17,7 @@ import Codicon from "@site/src/components/Codicon";
 ## Configuration in Kilo Code
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 1. **Open Kilo Code Settings:** Click the gear icon (<Codicon name="gear" />) in the Kilo Code panel.
 2. **Select Provider:** Choose "ZenMux" from the "API Provider" dropdown.
@@ -26,7 +26,7 @@ import Codicon from "@site/src/components/Codicon";
 5. **(Optional) Custom Base URL:** If you need to use a custom base URL for the ZenMux API, check "Use custom base URL" and enter the URL. Leave this blank for most users.
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 Open **Settings** (gear icon) and go to the **Providers** tab to add ZenMux and enter your API key.
 

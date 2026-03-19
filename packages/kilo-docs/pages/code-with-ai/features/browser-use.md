@@ -14,9 +14,9 @@ Browser Use requires an advanced agentic model. It is typically most reliable wi
 ## How Browser Use Works
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
-By default, Kilo Code uses a built-in Puppeteer browser that:
+By default, Kilo Code uses a built-in browser that:
 
 - Launches automatically when you ask Kilo to visit a website
 - Captures screenshots of web pages
@@ -26,7 +26,7 @@ By default, Kilo Code uses a built-in Puppeteer browser that:
 All of this happens directly within VS Code, with no setup required.
 
 {% /tab %}
-{% tab label="New Extension & CLI" %}
+{% tab label="VSCode (Pre-release) & CLI" %}
 
 Kilo Code uses [Playwright](https://playwright.dev/) via MCP (`@playwright/mcp@latest`) for browser automation. The Playwright MCP server is registered dynamically as `kilo-playwright`.
 
@@ -72,9 +72,9 @@ For example:
 ## How Browser Actions Work
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
-The `browser_action` tool controls a browser instance that returns screenshots and console logs after each action, allowing you to see the results of interactions.
+The browser_action tool controls a browser instance that returns screenshots and console logs after each action, allowing you to see the results of interactions.
 
 Key characteristics:
 
@@ -95,7 +95,7 @@ Key characteristics:
 | `close`       | Closes the browser             | Ending a browser session              |
 
 {% /tab %}
-{% tab label="New Extension & CLI" %}
+{% tab label="VSCode (Pre-release) & CLI" %}
 
 The Playwright MCP server provides a set of browser tools for interacting with web pages. These tools return screenshots and accessibility snapshots after each action.
 
@@ -124,7 +124,7 @@ Key characteristics:
 ## Browser Use Settings
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 {% callout type="info" title="Default Browser Settings" %}
 
@@ -228,14 +228,14 @@ google-chrome --remote-debugging-port=9222 --user-data-dir=/tmp/chrome-debug --n
 ```
 
 {% /tab %}
-{% tab label="New Extension & CLI" %}
+{% tab label="VSCode (Pre-release) & CLI" %}
 
 ### VS Code Extension Settings
 
 In the VS Code extension, browser automation settings are available under **Settings → Browser**:
 
 - **Enable browser automation**: Toggle to enable or disable Playwright browser automation
-- **Headless mode** (`browserAutomation.headless`): Run the browser without a visible window (default: enabled)
+- **Headless mode** (`browserAutomation.headless`): Run the browser without a visible window (default: disabled)
 - **Use system Chrome** (`browserAutomation.useSystemChrome`): Use your installed Chrome instead of the bundled Chromium
 
 ### CLI Configuration

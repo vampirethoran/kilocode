@@ -17,7 +17,7 @@ OpenRouter is an AI platform that provides access to a wide variety of language 
 ## Configuration in Kilo Code
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 1.  **Open Kilo Code Settings:** Click the gear icon ({% codicon name="gear" /%}) in the Kilo Code panel.
 2.  **Select Provider:** Choose "OpenRouter" from the "API Provider" dropdown.
@@ -26,7 +26,7 @@ OpenRouter is an AI platform that provides access to a wide variety of language 
 5.  **(Optional) Custom Base URL:** If you need to use a custom base URL for the OpenRouter API, check "Use custom base URL" and enter the URL. Leave this blank for most users.
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 Open **Settings** (gear icon) and go to the **Providers** tab to add OpenRouter and enter your API key.
 

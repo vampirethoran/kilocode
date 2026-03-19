@@ -5,14 +5,14 @@ description: "AI-powered code autocompletion in Kilo Code"
 
 # Autocomplete
 
-Kilo Code's autocomplete feature provides intelligent code suggestions and completions while you're typing, helping you write code faster and more efficiently.
+Kilo Code's autocomplete feature provides intelligent code suggestions and completions while you're typing, helping you write code faster and more efficiently. It offers both automatic and manual triggering options.
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 ## How Autocomplete Works
 
-Autocomplete uses a ghost text service to analyze your code context and provide:
+Autocomplete analyzes your code context and provides:
 
 - **Inline completions** as you type
 - **Quick fixes** for common code patterns
@@ -47,7 +47,7 @@ This is ideal for:
 - Refactoring suggestions
 - Keeping you in the flow without interruptions
 
-You can customize this keyboard shortcut in your VS Code settings.
+You can customize this keyboard shortcut as well in your VS Code settings.
 
 ### Chat Suggestions
 
@@ -90,7 +90,7 @@ If using Cursor, go to **Settings** > **Cursor Settings** > **Tab**, and toggle 
 {% image src="https://github.com/user-attachments/assets/fd2eeae2-f770-40ca-8a72-a9d5a1c17d47" alt="Disable Cursor autocomplete" width="800" caption="Disable Cursor autocomplete" /%}
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 {% callout type="info" %}
 Autocomplete is an **extension-only** feature. It is not available in the CLI/TUI.

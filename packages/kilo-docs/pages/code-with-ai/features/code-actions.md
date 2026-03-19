@@ -5,18 +5,18 @@ description: "Quick code actions and refactoring with Kilo Code"
 
 # Code Actions
 
-Code Actions are a VS Code feature that provide quick fixes, refactorings, and other code-related suggestions directly within the editor. Kilo Code integrates with this system to offer AI-powered assistance for common coding tasks.
+Code Actions are a powerful feature of VS Code that provide quick fixes, refactorings, and other code-related suggestions directly within the editor. Kilo Code integrates with this system to offer AI-powered assistance for common coding tasks.
 
 {% callout type="info" %}
 Code Actions are a **VS Code extension feature** and are not available in the CLI/TUI.
 {% /callout %}
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 ## What are Code Actions?
 
-Code Actions appear as a lightbulb icon in the editor gutter (the area to the left of the line numbers). They can also be accessed via the right-click context menu, or via keyboard shortcut. They are triggered when:
+Code Actions appear as a lightbulb icon (💡) in the editor gutter (the area to the left of the line numbers). They can also be accessed via the right-click context menu, or via keyboard shortcut. They are triggered when:
 
 - You select a range of code.
 - Your cursor is on a line with a problem (error, warning, or hint).
@@ -26,9 +26,11 @@ Clicking the lightbulb, right-clicking and selecting "Kilo Code", or using the k
 
 {% image src="/docs/img/code-actions/code-actions-1.png" alt="VS Code code actions in line with code" width="500" /%}
 
-## Available Code Actions
+## Kilo Code's Code Actions
 
-- **Add to Context:** Quickly adds the selected code to your chat with Kilo, including line numbers so Kilo knows exactly where the code is from. It's listed first in the menu for easy access.
+Kilo Code provides the following Code Actions:
+
+- **Add to Context:** Quickly adds the selected code to your chat with Kilo, including line numbers so Kilo knows exactly where the code is from. It's listed first in the menu for easy access. (More details below).
 - **Explain Code:** Asks Kilo Code to explain the selected code.
 - **Fix Code:** Asks Kilo Code to fix problems in the selected code (available when diagnostics are present).
 - **Improve Code:** Asks Kilo Code to suggest improvements to the selected code.
@@ -56,7 +58,7 @@ Each of these actions can be performed "in a new task" or "in the current task."
 
 There are three main ways to use Kilo Code's Code Actions:
 
-### 1. From the Lightbulb
+### 1. From the Lightbulb (💡)
 
 1.  **Select Code:** Select the code you want to work with. You can select a single line, multiple lines, or an entire block of code.
 2.  **Look for the Lightbulb:** A lightbulb icon will appear in the gutter next to the selected code (or the line with the error/warning).
@@ -96,7 +98,7 @@ You can customize the prompts used for each Code Action by modifying the "Suppor
 4.  **Click "Done":** Save your changes.
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 ## Available Code Actions
 
@@ -122,4 +124,4 @@ The new extension also adds code actions to the **terminal context menu**:
 {% /tab %}
 {% /tabs %}
 
-By using Kilo Code's Code Actions, you can quickly get AI-powered assistance directly within your coding workflow.
+By using Kilo Code's Code Actions, you can quickly get AI-powered assistance directly within your coding workflow. This can save you time and help you write better code.

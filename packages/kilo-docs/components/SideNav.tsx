@@ -69,7 +69,7 @@ const ChevronLeft = () => (
 
 function PlatformBadge({ platform }: { platform?: Platform }) {
   if (!platform || platform === "all") return null
-  const label = platform === "classic" ? "Classic" : "New"
+  const label = platform === "classic" ? "VSCode" : "Pre-release"
   return (
     <span className="platform-badge" data-platform={platform}>
       {label}

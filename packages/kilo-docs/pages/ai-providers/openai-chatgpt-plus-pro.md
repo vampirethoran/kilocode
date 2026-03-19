@@ -5,7 +5,7 @@ sidebar_label: ChatGPT Plus/Pro
 # Using ChatGPT Subscriptions With Kilo Code
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 1. Open Kilo Code settings (click the gear icon {% codicon name="gear" /%} in the Kilo Code panel).
 2. In **API Provider**, select **OpenAI – ChatGPT Plus/Pro**.
@@ -15,7 +15,7 @@ sidebar_label: ChatGPT Plus/Pro
 6. Save.
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 Open **Settings** (gear icon) and go to the **Providers** tab. ChatGPT Plus/Pro uses OAuth authentication — follow the sign-in flow to connect your ChatGPT subscription.
 

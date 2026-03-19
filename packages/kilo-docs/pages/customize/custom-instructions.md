@@ -1,18 +1,18 @@
 ---
 title: "Custom Instructions"
-description: "Customize how Kilo Code agents behave with per-agent prompts, instruction files, and rules"
+description: "Provide custom instructions to guide Kilo Code"
 ---
 
 # Custom Instructions
 
-Custom Instructions allow you to personalize how Kilo Code behaves, providing specific guidance that shapes responses, coding style, and decision-making processes. Both the Classic extension and the new extension & CLI support custom instructions, though the mechanisms differ.
+Custom Instructions allow you to personalize how Kilo Code behaves, providing specific guidance that shapes responses, coding style, and decision-making processes. Both the **VSCode** and **VSCode (Pre-release) & CLI** versions support custom instructions, though the mechanisms differ.
 
 ## What Are Custom Instructions?
 
-Custom Instructions define specific behaviors, preferences, and constraints beyond Kilo's default role definition. Examples include coding style, documentation standards, testing requirements, and workflow guidelines.
+Custom Instructions define specific Extension behaviors, preferences, and constraints beyond Kilo's basic role definition. Examples include coding style, documentation standards, testing requirements, and workflow guidelines.
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 ## Setting Custom Instructions
 
@@ -29,22 +29,22 @@ Custom Instructions are IDE-wide and are applied across all workspaces and maint
 3.  **Enter Instructions:** Enter your instructions in the text area
 4.  **Save Changes:** Click "Done" to save your changes
 
-### Mode-Specific Instructions
+#### Mode-Specific Instructions
 
 Mode-specific instructions can be set using the Modes Tab
 
-{% image src="/docs/img/custom-instructions/custom-instructions-3.png" alt="Kilo Code Modes tab showing mode-specific custom instructions interface" width="600" caption="Kilo Code Modes tab showing mode-specific custom instructions interface" /%}
+    {% image src="/docs/img/custom-instructions/custom-instructions-3.png" alt="Kilo Code Modes tab showing mode-specific custom instructions interface" width="600" caption="Kilo Code Modes tab showing mode-specific custom instructions interface" /%}
+    * **Open Tab:** Click the <Codicon name="notebook" /> icon in the Kilo Code top menu bar
+    * **Select Mode:** Under the Modes heading, click the button for the mode you want to customize
+    * **Enter Instructions:** Enter your instructions in the text area under "Mode-specific Custom Instructions (optional)"
+    * **Save Changes:** Click "Done" to save your changes
 
-- **Open Tab:** Click the <Codicon name="notebook" /> icon in the Kilo Code top menu bar
-- **Select Mode:** Under the Modes heading, click the button for the mode you want to customize
-- **Enter Instructions:** Enter your instructions in the text area under "Mode-specific Custom Instructions (optional)"
-- **Save Changes:** Click "Done" to save your changes
+        {% callout type="info" title="Global Mode Rules" %}
 
-{% callout type="info" title="Global Mode Rules" %}
 If the mode itself is global (not workspace-specific), any custom instructions you set for it will also apply globally for that mode across all workspaces.
 {% /callout %}
 
-### Mode-Specific Instructions from Files
+## Mode-Specific Instructions from Files
 
 For version-controlled mode instructions, use the mode rules file paths documented in [Custom Modes](/docs/customize/custom-modes#mode-specific-instructions-via-filesdirectories):
 
@@ -56,7 +56,7 @@ Older naming like `.clinerules-{mode-slug}` is not the recommended path for curr
 {% /callout %}
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 The new extension provides multiple layers of instruction configuration — from per-agent prompts in the Settings UI to auto-discovered files in your project and global config.
 
@@ -114,7 +114,7 @@ URL-based instruction sources are fetched at session start with a 5-second timeo
 
 ## Legacy `.kilocoderules` Support
 
-If your project contains `.kilocoderules` files from the Classic extension, these are still loaded via auto-migration. However, migrating to `AGENTS.md` is recommended for new projects.
+If your project contains `.kilocoderules` files from the VSCode extension, these are still loaded via auto-migration. However, migrating to `AGENTS.md` is recommended for new projects.
 
 {% /tab %}
 {% tab label="CLI" %}
@@ -194,7 +194,7 @@ URL-based instruction sources are fetched at session start with a 5-second timeo
 
 ## Legacy `.kilocoderules` Support
 
-If your project contains `.kilocoderules` files from the Classic extension, these are still loaded via auto-migration. However, migrating to `AGENTS.md` is recommended for new projects.
+If your project contains `.kilocoderules` files from the VSCode extension, these are still loaded via auto-migration. However, migrating to `AGENTS.md` is recommended for new projects.
 
 {% /tab %}
 {% /tabs %}

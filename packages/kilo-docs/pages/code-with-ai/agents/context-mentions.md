@@ -5,10 +5,10 @@ description: "How to provide context to Kilo Code using mentions"
 
 # Context Mentions
 
-Providing the right context helps Kilo Code understand your project and perform tasks accurately. How you provide that context depends on which version of Kilo Code you're using — the Classic extension uses `@`-mentions in the chat input, while the New Extension and CLI use a tool-based approach where the agent automatically discovers the context it needs.
+Providing the right context helps Kilo Code understand your project and perform tasks accurately. How you provide that context depends on which version of Kilo Code you're using — the **VSCode** version uses `@`-mentions in the chat input, while the **VSCode (Pre-release) & CLI** version uses a tool-based approach where the agent automatically discovers the context it needs.
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 Context mentions are a powerful way to provide Kilo Code with specific information about your project, allowing it to perform tasks more accurately and efficiently. You can use mentions to refer to files, folders, problems, and Git commits. Context mentions start with the `@` symbol.
 
@@ -123,9 +123,9 @@ The dropdown automatically suggests:
 | **Combine mentions**       | "Fix @problems in @/src/component.ts using the pattern from commit @a1b2c3d"     |
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
-The New Extension uses a fundamentally different context model. Instead of manually referencing files with `@`-mentions, the agent **automatically discovers and reads the context it needs** using built-in tools.
+The **VSCode (Pre-release)** version uses a fundamentally different context model compared to the **VSCode** version. The agent **automatically discovers and reads the context it needs** using built-in tools. You can also type `@` in the chat input to get file autocomplete suggestions, but the agent can also find files on its own using its tools.
 
 ## How Context Works
 
@@ -135,14 +135,16 @@ When you describe a task, the agent uses its tools — `read`, `grep`, `glob`, a
 
 The agent automatically receives context from your editor:
 
-| Context         | Details                                              |
-| --------------- | ---------------------------------------------------- |
-| **Active file** | The file currently open and focused in your editor   |
-| **Open tabs**   | Files you have open in editor tabs                   |
-| **Selection**   | Any text you have selected in the active editor      |
-| **Diagnostics** | Errors and warnings from VS Code's language services |
+| Context         | Details                                            |
+| --------------- | -------------------------------------------------- |
+| **Active file** | The file currently open and focused in your editor |
+| **Open tabs**   | Files you have open in editor tabs                 |
 
 This context is passed to the agent without any explicit mentions — it's included automatically with each message you send.
+
+{% callout type="note" %}
+**Selection** and **diagnostics** are not sent automatically with each message. They are available through VS Code Code Actions (e.g., selecting code and using the lightbulb menu), but are not part of the default editor context.
+{% /callout %}
 
 ### Tool-Based File Access
 
@@ -169,7 +171,7 @@ This means the agent can explore your entire project as needed, rather than bein
 {% /tab %}
 {% tab label="CLI" %}
 
-The CLI uses a tool-based context model. Instead of `@`-mentions or autocomplete dropdowns, the agent **automatically discovers and reads the context it needs** using built-in tools.
+The CLI uses a tool-based context model. The agent **automatically discovers and reads the context it needs** using built-in tools. In the TUI, you can type `@` to get file autocomplete suggestions for quick file references.
 
 ## How Context Works
 
@@ -179,8 +181,9 @@ When you describe a task, the agent uses its tools — `read`, `grep`, `glob`, a
 
 In the terminal-based TUI, you can provide context in several ways:
 
+- **Type `@` for file autocomplete** — In the TUI, type `@` followed by a filename to get autocomplete suggestions for quick file references.
 - **Mention file paths in your message** — Simply refer to files by path in your conversation text (e.g., "look at src/utils.ts") and the agent will read them.
-- **Use the `--file` flag** — When starting a session or sending a message, pass `--file path/to/file.ts` to explicitly include a file's contents in the context.
+- **Use `kilo run -f`** — When using the non-interactive `kilo run` command, pass `-f path/to/file.ts` to explicitly include a file's contents in the context. This flag is not available in the interactive TUI.
 - **Let the agent find files itself** — The agent has access to `glob` (find files by pattern), `grep` (search file contents), and `read` (read file contents) tools. Describe what you're looking for and it will locate the relevant code.
 
 ### Tool-Based File Access
@@ -202,7 +205,7 @@ This means the agent can explore your entire project as needed, rather than bein
 | ------------------------------ | -------------------------------------------------------------------------------------------------- |
 | **Describe the task clearly**  | The agent finds context on its own — focus on _what_ you want done rather than _where_ the code is |
 | **Mention files when helpful** | If you know the exact file, mention its path to save the agent a search step                       |
-| **Use `--file` for CLI input** | Pass key files with `--file` when starting CLI sessions for immediate context                      |
+| **Use `kilo run -f`**          | Pass key files with `-f` when using `kilo run` for immediate context (not available in the TUI)    |
 | **Trust the agent's tools**    | The agent can search, read, and explore your codebase — let it do the discovery work               |
 
 {% /tab %}

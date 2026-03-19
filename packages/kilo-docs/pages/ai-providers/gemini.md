@@ -18,7 +18,7 @@ Kilo Code supports Google's Gemini family of models through the Google AI Gemini
 ## Configuration in Kilo Code
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 1.  **Open Kilo Code Settings:** Click the gear icon ({% codicon name="gear" /%}) in the Kilo Code panel.
 2.  **Select Provider:** Choose "Google Gemini" from the "API Provider" dropdown.
@@ -26,7 +26,7 @@ Kilo Code supports Google's Gemini family of models through the Google AI Gemini
 4.  **Select Model:** Choose your desired Gemini model from the "Model" dropdown.
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 Open **Settings** (gear icon) and go to the **Providers** tab to add Google Gemini and enter your API key.
 

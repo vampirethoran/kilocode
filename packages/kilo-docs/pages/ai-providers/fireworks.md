@@ -18,7 +18,7 @@ Fireworks AI is a high-performance platform for running AI models that offers fa
 ## Configuration in Kilo Code
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 1. **Open Kilo Code Settings:** Click the gear icon ({% codicon name="gear" /%}) in the Kilo Code panel.
 2. **Select Provider:** Choose "Fireworks AI" from the "API Provider" dropdown.
@@ -26,7 +26,7 @@ Fireworks AI is a high-performance platform for running AI models that offers fa
 4. **Select Model:** Choose your desired model from the "Model" dropdown.
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 Open **Settings** (gear icon) and go to the **Providers** tab to add Fireworks AI and enter your API key.
 
@@ -40,7 +40,7 @@ Set the API key as an environment variable or configure it in your `kilo.json` c
 **Environment variable:**
 
 ```bash
-export FIREWORKS_API_KEY="your-api-key"
+export FIREWORKS_AI_API_KEY="your-api-key"
 ```
 
 **Config file** (`~/.config/kilo/kilo.json` or `./kilo.json`):
@@ -48,8 +48,8 @@ export FIREWORKS_API_KEY="your-api-key"
 ```jsonc
 {
   "provider": {
-    "fireworks": {
-      "env": ["FIREWORKS_API_KEY"],
+    "fireworks-ai": {
+      "env": ["FIREWORKS_AI_API_KEY"],
     },
   },
 }

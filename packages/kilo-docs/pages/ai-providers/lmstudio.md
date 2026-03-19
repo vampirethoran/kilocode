@@ -28,7 +28,7 @@ Kilo Code supports running models locally using LM Studio. LM Studio provides a 
 ## Configuration in Kilo Code
 
 {% tabs %}
-{% tab label="Classic Extension" %}
+{% tab label="VSCode" %}
 
 1.  **Open Kilo Code Settings:** Click the gear icon ({% codicon name="gear" /%}) in the Kilo Code panel.
 2.  **Select Provider:** Choose "LM Studio" from the "API Provider" dropdown.
@@ -37,7 +37,7 @@ Kilo Code supports running models locally using LM Studio. LM Studio provides a 
 5.  **(Optional) Timeout:** By default, API requests time out after 10 minutes. Local models can be slow, if you hit this timeout you can consider increasing it here: VS Code Extensions panel > Kilo Code gear menu > Settings > API Request Timeout.
 
 {% /tab %}
-{% tab label="New Extension" %}
+{% tab label="VSCode (Pre-release)" %}
 
 Open **Settings** (gear icon) and go to the **Providers** tab to add LM Studio. No API key is needed since LM Studio runs locally. You can configure the base URL if LM Studio is running on a different host or port.
 

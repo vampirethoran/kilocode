@@ -14,8 +14,8 @@ export function PageVersionSwitcher({ platform }: PageVersionSwitcherProps) {
       <span className="version-banner-icon">{isClassic ? "\u24D8" : "\u2728"}</span>
       <span>
         {isClassic
-          ? "This page documents the Classic Kilo Code extension (v5.x). The New CLI & extension does not have an equivalent page yet."
-          : "This page documents the New Kilo CLI & extension (v7.x+). There is no Classic equivalent for this page."}
+          ? "This page documents the VSCode extension. The Pre-release VSCode extension & CLI does not have an equivalent page yet."
+          : "This page documents the Pre-release VSCode extension & CLI. There is no equivalent page for the current VSCode extension."}
       </span>
 
       <style jsx>{`
