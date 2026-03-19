@@ -87,6 +87,7 @@ export namespace ModelsDev {
     recommendedIndex: z.number().optional(),
     prompt: Prompt.optional().catch(undefined),
     isFree: z.boolean().optional(),
+    ai_sdk_provider: z.enum(["anthropic", "openai", "openai-compatible", "openrouter"]).optional().catch(undefined),
     // kilocode_change end
 
     experimental: z.boolean().optional(),

@@ -30,7 +30,7 @@ import { createOpenAI } from "@ai-sdk/openai"
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible"
 import { createOpenRouter, type LanguageModelV2 } from "@openrouter/ai-sdk-provider"
 import { createOpenaiCompatible as createGitHubCopilotOpenAICompatible } from "./sdk/copilot"
-import { createKilo } from "@kilocode/kilo-gateway" // kilocode_change
+import { createKilo, createKiloForProvider } from "@kilocode/kilo-gateway" // kilocode_change
 import { createXai } from "@ai-sdk/xai"
 import { createMistral } from "@ai-sdk/mistral"
 import { createGroq } from "@ai-sdk/groq"
@@ -615,6 +615,11 @@ export namespace Provider {
       return {
         autoload: Object.keys(input.models).length > 0,
         options,
+        async getModel(_sdk: any, modelID: string, opts?: Record<string, any>) {
+          const sdkProvider = input.models[modelID]?.ai_sdk_provider ?? "openrouter"
+          const sdk = createKiloForProvider(sdkProvider, opts ?? {})
+          return sdk.languageModel(modelID)
+        },
       }
     },
     // kilocode_change end
@@ -690,6 +695,7 @@ export namespace Provider {
       recommendedIndex: z.number().optional(),
       prompt: Prompt.optional().catch(undefined),
       isFree: z.boolean().optional(),
+      ai_sdk_provider: z.enum(["anthropic", "openai", "openai-compatible", "openrouter"]).optional(),
       // kilocode_change end
     })
     .meta({
@@ -777,6 +783,7 @@ export namespace Provider {
       recommendedIndex: model.recommendedIndex,
       prompt: model.prompt,
       isFree: model.isFree,
+      ai_sdk_provider: model.ai_sdk_provider,
       // kilocode_change end
     }
 

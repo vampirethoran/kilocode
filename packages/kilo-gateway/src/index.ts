@@ -6,7 +6,8 @@ export { KiloAuthPlugin, default } from "./plugin.js"
 // ============================================================================
 // Provider
 // ============================================================================
-export { createKilo } from "./provider.js"
+export { createKilo, createKiloForProvider } from "./provider.js"
+export type { AiSdkProvider } from "./provider.js"
 export { createKiloDebug } from "./provider-debug.js"
 export { kiloCustomLoader } from "./loader.js"
 export { buildKiloHeaders, getEditorNameHeader, getFeatureHeader, DEFAULT_HEADERS } from "./headers.js"
