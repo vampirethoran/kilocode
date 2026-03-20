@@ -112,6 +112,7 @@ export function selectedForeground(theme: Theme, bg?: RGBA): RGBA {
   }
 
   // For transparent backgrounds, calculate contrast based on the actual bg (or fallback to primary)
+  // in cases where transparency in near-zero, consider that transparent as well
   if (theme.background.a < 0.1) {
     const targetColor = bg ?? theme.primary
     const { r, g, b } = targetColor
