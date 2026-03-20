@@ -11,6 +11,7 @@ import { BrowserAutomationService } from "./services/browser-automation"
 import { TelemetryProxy } from "./services/telemetry"
 import { registerCommitMessageService } from "./services/commit-message"
 import { registerCodeActions, registerTerminalActions, KiloCodeActionProvider } from "./services/code-actions"
+import { registerToggleAutoApprove } from "./commands/toggle-auto-approve"
 
 export function activate(context: vscode.ExtensionContext) {
   console.log("Kilo Code extension is now active")
@@ -180,6 +181,9 @@ export function activate(context: vscode.ExtensionContext) {
 
   // Register commit message generation
   registerCommitMessageService(context, connectionService)
+
+  // Register toggle auto-approve shortcut (Ctrl+Alt+A / Cmd+Alt+A)
+  registerToggleAutoApprove(context, connectionService)
 
   // Register code actions (editor context menus, terminal context menus, keyboard shortcuts)
   registerCodeActions(context, provider, agentManagerProvider)
