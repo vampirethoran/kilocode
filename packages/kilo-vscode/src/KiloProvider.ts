@@ -2180,7 +2180,14 @@ export class KiloProvider implements vscode.WebviewViewProvider, TelemetryProper
 
     try {
       const workspaceDir = this.getWorkspaceDirectory(targetSessionID)
-      await handlePermissionResponseUtil(this.client, permissionId, response, approvedAlways, deniedAlways, workspaceDir)
+      await handlePermissionResponseUtil(
+        this.client,
+        permissionId,
+        response,
+        approvedAlways,
+        deniedAlways,
+        workspaceDir,
+      )
     } catch (error) {
       console.error("[Kilo New] KiloProvider: Failed to respond to permission:", error)
       this.postMessage({ type: "permissionError", permissionID: permissionId })
