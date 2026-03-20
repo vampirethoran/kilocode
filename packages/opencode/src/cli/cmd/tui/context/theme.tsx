@@ -362,7 +362,7 @@ export const { use: useTheme, provider: ThemeProvider } = createSimpleContext({
     const values = createMemo(() => {
       const resolved = resolveTheme(store.themes[store.active] ?? store.themes.kilo, store.mode)
       if (bgMode.value === "transparent") {
-        resolved.background = RGBA.fromHex("#1e1e2e99")
+        resolved.background = RGBA.fromInts(resolved.background.r, resolved.background.g, resolved.background.b, 0.01)
       }
       return resolved
     })
