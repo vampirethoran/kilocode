@@ -212,6 +212,41 @@ export namespace PermissionNext {
   )
 
   // kilocode_change start
+
+  /**
+   * Auto-resolve pending permissions now fully covered by approved or denied rules.
+   * When the user approves/denies a rule on subagent A, sibling subagent B's
+   * pending permission for the same pattern resolves or rejects automatically.
+   */
+  async function drainCovered(exclude?: string) {
+    const s = await state()
+    for (const [id, pending] of Object.entries(s.pending)) {
+      if (id === exclude) continue
+      const actions = pending.info.patterns.map((pattern) =>
+        evaluate(pending.info.permission, pattern, s.approved),
+      )
+      const denied = actions.some((r) => r.action === "deny")
+      const allowed = !denied && actions.every((r) => r.action === "allow")
+      if (!denied && !allowed) continue
+      delete s.pending[id]
+      if (denied) {
+        Bus.publish(Event.Replied, {
+          sessionID: pending.info.sessionID,
+          requestID: pending.info.id,
+          reply: "reject",
+        })
+        pending.reject(new DeniedError(s.approved.filter((r) => Wildcard.match(pending.info.permission, r.permission))))
+      } else {
+        Bus.publish(Event.Replied, {
+          sessionID: pending.info.sessionID,
+          requestID: pending.info.id,
+          reply: "always",
+        })
+        pending.resolve()
+      }
+    }
+  }
+
   export const saveAlwaysRules = fn(
     z.object({
       requestID: Identifier.schema("permission"),
@@ -240,6 +275,8 @@ export namespace PermissionNext {
       if (newRules.length > 0) {
         await Config.updateGlobal({ permission: toConfig(newRules) }, { dispose: false })
       }
+
+      await drainCovered(input.requestID)
     },
   )
   // kilocode_change end

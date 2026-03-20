@@ -38,6 +38,7 @@ import {
 import { MarketplaceService } from "./services/marketplace"
 import { resolveProjectDirectory } from "./project-directory"
 import { getBusySessionCount, seedSessionStatuses } from "./session-status"
+import { handlePermissionResponse as handlePermissionResponseUtil, fetchPendingPermissions } from "./permission-handler"
 
 type KiloProviderOptions = {
   projectDirectory?: string | null
@@ -2157,7 +2158,6 @@ export class KiloProvider implements vscode.WebviewViewProvider, TelemetryProper
 
   /**
    * Handle permission response from the webview.
-   * Calls saveAlwaysRules first (if any), then reply — sequentially to avoid races.
    */
   private async handlePermissionResponse(
     permissionId: string,
@@ -2180,24 +2180,7 @@ export class KiloProvider implements vscode.WebviewViewProvider, TelemetryProper
 
     try {
       const workspaceDir = this.getWorkspaceDirectory(targetSessionID)
-
-      // Save per-pattern rules before replying (reply deletes the pending request)
-      if (approvedAlways.length > 0 || deniedAlways.length > 0) {
-        await this.client.permission.saveAlwaysRules(
-          {
-            requestID: permissionId,
-            directory: workspaceDir,
-            approvedAlways,
-            deniedAlways,
-          },
-          { throwOnError: true },
-        )
-      }
-
-      await this.client.permission.reply(
-        { requestID: permissionId, reply: response, directory: workspaceDir },
-        { throwOnError: true },
-      )
+      await handlePermissionResponseUtil(this.client, permissionId, response, approvedAlways, deniedAlways, workspaceDir)
     } catch (error) {
       console.error("[Kilo New] KiloProvider: Failed to respond to permission:", error)
       this.postMessage({ type: "permissionError", permissionID: permissionId })
@@ -2206,32 +2189,13 @@ export class KiloProvider implements vscode.WebviewViewProvider, TelemetryProper
 
   /**
    * Fetch all pending permissions from the backend and forward any that belong
-   * to tracked sessions to the webview. Called after SSE reconnects and after
-   * loading messages for a session so that missed permission.asked events are
-   * recovered instead of leaving the server blocked indefinitely.
+   * to tracked sessions to the webview.
    */
   private async fetchAndSendPendingPermissions(): Promise<void> {
     if (!this.client) return
     try {
       const workspaceDir = this.getWorkspaceDirectory()
-      const { data } = await this.client.permission.list({ directory: workspaceDir })
-      if (!data) return
-      for (const perm of data) {
-        if (!this.trackedSessionIds.has(perm.sessionID)) continue
-        this.postMessage({
-          type: "permissionRequest",
-          permission: {
-            id: perm.id,
-            sessionID: perm.sessionID,
-            toolName: perm.permission,
-            patterns: perm.patterns,
-            always: perm.always,
-            args: perm.metadata,
-            message: `Permission required: ${perm.permission}`,
-            tool: perm.tool,
-          },
-        })
-      }
+      await fetchPendingPermissions(this.client, workspaceDir, this.trackedSessionIds, (msg) => this.postMessage(msg))
     } catch (error) {
       console.error("[Kilo New] KiloProvider: Failed to fetch pending permissions:", error)
     }

@@ -328,4 +328,205 @@ describe("saveAlwaysRules", () => {
       },
     })
   })
+
+  test("auto-resolves pending permission from sibling session", async () => {
+    await using tmp = await tmpdir({ git: true })
+    await Instance.provide({
+      directory: tmp.path,
+      fn: async () => {
+        // Subagent A asks for bash permission
+        const askA = PermissionNext.ask({
+          id: "permission_a",
+          sessionID: "session_a",
+          permission: "bash",
+          patterns: ["npm install"],
+          metadata: { rules: ["npm *"] },
+          always: ["npm *"],
+          ruleset: [],
+        })
+
+        // Subagent B asks for the same permission (different session)
+        const askB = PermissionNext.ask({
+          id: "permission_b",
+          sessionID: "session_b",
+          permission: "bash",
+          patterns: ["npm test"],
+          metadata: {},
+          always: [],
+          ruleset: [],
+        })
+
+        // User approves "npm *" on subagent A's permission
+        await PermissionNext.saveAlwaysRules({
+          requestID: "permission_a",
+          approvedAlways: ["npm *"],
+        })
+
+        // Subagent B should auto-resolve because "npm test" matches "npm *"
+        await PermissionNext.reply({ requestID: "permission_a", reply: "once" })
+        await expect(askA).resolves.toBeUndefined()
+        await expect(askB).resolves.toBeUndefined()
+      },
+    })
+  })
+
+  test("auto-resolves multiple pending permissions from different sessions", async () => {
+    await using tmp = await tmpdir({ git: true })
+    await Instance.provide({
+      directory: tmp.path,
+      fn: async () => {
+        const askA = PermissionNext.ask({
+          id: "permission_a2",
+          sessionID: "session_a",
+          permission: "bash",
+          patterns: ["npm install lodash"],
+          metadata: { rules: ["npm *", "npm install *"] },
+          always: ["npm *"],
+          ruleset: [],
+        })
+
+        const askB = PermissionNext.ask({
+          id: "permission_b2",
+          sessionID: "session_b",
+          permission: "bash",
+          patterns: ["npm run build"],
+          metadata: {},
+          always: [],
+          ruleset: [],
+        })
+
+        const askC = PermissionNext.ask({
+          id: "permission_c2",
+          sessionID: "session_c",
+          permission: "bash",
+          patterns: ["npm test"],
+          metadata: {},
+          always: [],
+          ruleset: [],
+        })
+
+        // Approve "npm *" on session A — should auto-resolve B and C
+        await PermissionNext.saveAlwaysRules({
+          requestID: "permission_a2",
+          approvedAlways: ["npm *"],
+        })
+        await PermissionNext.reply({ requestID: "permission_a2", reply: "once" })
+
+        await expect(askA).resolves.toBeUndefined()
+        await expect(askB).resolves.toBeUndefined()
+        await expect(askC).resolves.toBeUndefined()
+      },
+    })
+  })
+
+  test("does not auto-resolve pending permission with non-matching pattern", async () => {
+    await using tmp = await tmpdir({ git: true })
+    await Instance.provide({
+      directory: tmp.path,
+      fn: async () => {
+        const askA = PermissionNext.ask({
+          id: "permission_a3",
+          sessionID: "session_a",
+          permission: "bash",
+          patterns: ["npm install"],
+          metadata: { rules: ["npm *"] },
+          always: ["npm *"],
+          ruleset: [],
+        })
+
+        // Subagent B asks for a different command
+        const askB = PermissionNext.ask({
+          id: "permission_b3",
+          sessionID: "session_b",
+          permission: "bash",
+          patterns: ["curl http://example.com"],
+          metadata: {},
+          always: [],
+          ruleset: [],
+        })
+
+        // Approve "npm *" — should NOT resolve B (curl doesn't match npm *)
+        await PermissionNext.saveAlwaysRules({
+          requestID: "permission_a3",
+          approvedAlways: ["npm *"],
+        })
+        await PermissionNext.reply({ requestID: "permission_a3", reply: "once" })
+        await expect(askA).resolves.toBeUndefined()
+
+        // B should still be pending — reject it to clean up
+        await PermissionNext.reply({ requestID: "permission_b3", reply: "reject" })
+        await expect(askB).rejects.toBeInstanceOf(PermissionNext.RejectedError)
+      },
+    })
+  })
+
+  test("does not auto-resolve the request being replied to", async () => {
+    await using tmp = await tmpdir({ git: true })
+    await Instance.provide({
+      directory: tmp.path,
+      fn: async () => {
+        const askA = PermissionNext.ask({
+          id: "permission_a4",
+          sessionID: "session_a",
+          permission: "bash",
+          patterns: ["npm install"],
+          metadata: { rules: ["npm *"] },
+          always: ["npm *"],
+          ruleset: [],
+        })
+
+        // Save rules but don't reply yet — the request itself should not be auto-resolved
+        await PermissionNext.saveAlwaysRules({
+          requestID: "permission_a4",
+          approvedAlways: ["npm *"],
+        })
+
+        // The original request should still be pending (needs explicit reply)
+        const pending = await PermissionNext.list()
+        expect(pending.some((p) => p.id === "permission_a4")).toBe(true)
+
+        await PermissionNext.reply({ requestID: "permission_a4", reply: "once" })
+        await expect(askA).resolves.toBeUndefined()
+      },
+    })
+  })
+
+  test("auto-rejects pending permission from sibling session when denied", async () => {
+    await using tmp = await tmpdir({ git: true })
+    await Instance.provide({
+      directory: tmp.path,
+      fn: async () => {
+        const askA = PermissionNext.ask({
+          id: "permission_a5",
+          sessionID: "session_a",
+          permission: "bash",
+          patterns: ["git log --oneline -5"],
+          metadata: { rules: ["git *", "git log *"] },
+          always: ["git log *"],
+          ruleset: [],
+        })
+
+        const askB = PermissionNext.ask({
+          id: "permission_b5",
+          sessionID: "session_b",
+          permission: "bash",
+          patterns: ["git log --oneline -10"],
+          metadata: {},
+          always: [],
+          ruleset: [],
+        })
+
+        // User denies "git log *" on subagent A
+        await PermissionNext.saveAlwaysRules({
+          requestID: "permission_a5",
+          deniedAlways: ["git log *"],
+        })
+
+        // Subagent B should auto-reject because "git log --oneline -10" matches denied "git log *"
+        await PermissionNext.reply({ requestID: "permission_a5", reply: "once" })
+        await expect(askA).resolves.toBeUndefined()
+        await expect(askB).rejects.toBeInstanceOf(PermissionNext.DeniedError)
+      },
+    })
+  })
 })
