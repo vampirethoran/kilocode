@@ -292,6 +292,9 @@ export const { use: useTheme, provider: ThemeProvider } = createSimpleContext({
       active: (config.theme ?? kv.get("theme", "kilo")) as string, // kilocode_change
       ready: false,
     })
+    const [bgMode, setBgMode] = createStore({
+      value: kv.get("background_mode", "solid") as "solid" | "transparent",
+    })
 
     createEffect(() => {
       const theme = config.theme
@@ -357,7 +360,11 @@ export const { use: useTheme, provider: ThemeProvider } = createSimpleContext({
     })
 
     const values = createMemo(() => {
-      return resolveTheme(store.themes[store.active] ?? store.themes.kilo, store.mode)
+      const resolved = resolveTheme(store.themes[store.active] ?? store.themes.kilo, store.mode)
+      if (bgMode.value === "transparent") {
+        resolved.background = RGBA.fromHex("#1e1e2e99")
+      }
+      return resolved
     })
 
     const syntax = createMemo(() => generateSyntax(values()))
@@ -388,6 +395,13 @@ export const { use: useTheme, provider: ThemeProvider } = createSimpleContext({
       set(theme: string) {
         setStore("active", theme)
         kv.set("theme", theme)
+      },
+      get backgroundMode() {
+        return bgMode.value
+      },
+      setBackgroundMode(mode: "solid" | "transparent") {
+        setBgMode("value", mode)
+        kv.set("background_mode", mode)
       },
       get ready() {
         return store.ready
