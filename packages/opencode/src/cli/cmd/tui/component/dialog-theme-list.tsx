@@ -57,7 +57,7 @@ export function DialogThemeList() {
           return
         }
 
-        const first = ref.filtered.find((opt) => opt.value !== initial)
+        const first = ref.filtered[0]
         if (first) ctx.set(first.value)
       }}
       footer={
