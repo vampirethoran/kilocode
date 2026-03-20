@@ -1,15 +1,8 @@
 import { DialogSelect, type DialogSelectRef } from "../ui/dialog-select"
-import { useTheme } from "../context/theme"
+import { useTheme, selectedForeground } from "../context/theme"
 import { useDialog } from "../ui/dialog"
-import { onCleanup } from "solid-js"
-import { RGBA } from "@opentui/core"
-
-const BG_SOLID = "__bg_solid"
-const BG_TRANSPARENT = "__bg_transparent"
-
-function isBgOption(value: string) {
-  return value === BG_SOLID || value === BG_TRANSPARENT
-}
+import { For, onCleanup } from "solid-js"
+import { RGBA, TextAttributes } from "@opentui/core"
 
 export function DialogThemeList() {
   const ctx = useTheme()
@@ -19,29 +12,12 @@ export function DialogThemeList() {
   let ref: DialogSelectRef<string>
   const initial = ctx.selected
 
-  const bgOptions = [
-    {
-      title: "Solid",
-      value: BG_SOLID,
-      category: "Background",
-      gutter: <text fg={ctx.backgroundMode === "solid" ? theme.primary : RGBA.fromInts(0, 0, 0, 0)}>●</text>,
-    },
-    {
-      title: "Transparent",
-      value: BG_TRANSPARENT,
-      category: "Background",
-      gutter: <text fg={ctx.backgroundMode === "transparent" ? theme.primary : RGBA.fromInts(0, 0, 0, 0)}>●</text>,
-    },
-  ]
-
   const themeOptions = Object.keys(ctx.all())
     .sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }))
     .map((value) => ({
       title: value,
       value: value,
     }))
-
-  const options = [...bgOptions, ...themeOptions]
 
   onCleanup(() => {
     if (!confirmed) ctx.set(initial)
@@ -50,19 +26,12 @@ export function DialogThemeList() {
   return (
     <DialogSelect
       title="Themes"
-      options={options}
+      options={themeOptions}
       current={initial}
       onMove={(opt) => {
-        if (isBgOption(opt.value)) return
         ctx.set(opt.value)
       }}
       onSelect={(opt) => {
-        if (isBgOption(opt.value)) {
-          ctx.setBackgroundMode(opt.value === BG_SOLID ? "solid" : "transparent")
-          confirmed = true
-          dialog.clear()
-          return
-        }
         ctx.set(opt.value)
         confirmed = true
         dialog.clear()
@@ -76,9 +45,60 @@ export function DialogThemeList() {
           return
         }
 
-        const first = ref.filtered.find((opt) => !isBgOption(opt.value))
+        const first = ref.filtered.find((opt) => opt.value !== initial)
         if (first) ctx.set(first.value)
       }}
+      header={<BackgroundTabs />}
     />
+  )
+}
+
+function BackgroundTabs() {
+  const ctx = useTheme()
+  const { theme } = ctx
+  const dialog = useDialog()
+  const fg = selectedForeground(theme)
+
+  const modes = [
+    { label: "Solid", value: "solid" as const },
+    { label: "Transparent", value: "transparent" as const },
+  ]
+
+  return (
+    <box paddingLeft={4} paddingRight={4} paddingTop={1}>
+      <text fg={theme.accent} attributes={TextAttributes.BOLD}>
+        Background
+      </text>
+      <box flexDirection="row" paddingTop={1} border={["bottom"]} borderColor={theme.border}>
+        <For each={modes}>
+          {(mode, i) => {
+            const active = () => ctx.backgroundMode === mode.value
+            return (
+              <box
+                border={(() => {
+                  const sides: ("top" | "left" | "right")[] = ["top"]
+                  if (i() === 0) sides.push("left")
+                  if (i() === modes.length - 1) sides.push("right")
+                  return sides
+                })()}
+                borderColor={theme.border}
+                backgroundColor={active() ? theme.primary : RGBA.fromInts(0, 0, 0, 0)}
+                paddingLeft={2}
+                paddingRight={2}
+                paddingBottom={0}
+                onMouseUp={() => {
+                  ctx.setBackgroundMode(mode.value)
+                  dialog.clear()
+                }}
+              >
+                <text fg={active() ? fg : theme.text} attributes={active() ? TextAttributes.BOLD : undefined}>
+                  {mode.label}
+                </text>
+              </box>
+            )
+          }}
+        </For>
+      </box>
+    </box>
   )
 }
