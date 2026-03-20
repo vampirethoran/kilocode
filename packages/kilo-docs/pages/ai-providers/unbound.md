@@ -38,35 +38,9 @@ The extension stores this in your `kilo.json` config file. You can also edit the
 {% /tab %}
 {% tab label="CLI" %}
 
-{% callout type="warning" %}Unbound is not yet available as a CLI provider. Check the [Kilo Code releases](https://github.com/Kilo-Org/kilocode/releases) for updates on provider support.{% /callout %}
-
-Set the API key as an environment variable or configure it in your `kilo.json` config file:
-
-**Environment variable:**
-
-```bash
-export UNBOUND_API_KEY="your-api-key"
-```
-
-**Config file** (`~/.config/kilo/kilo.json` or `./kilo.json`):
-
-```jsonc
-{
-  "provider": {
-    "unbound": {
-      "env": ["UNBOUND_API_KEY"],
-    },
-  },
-}
-```
-
-Then set your default model:
-
-```jsonc
-{
-  "model": "unbound/anthropic/claude-sonnet-4-20250514",
-}
-```
+{% callout type="warning" %}
+Unbound is not yet available as a CLI provider. Check the [Kilo Code releases](https://github.com/Kilo-Org/kilocode/releases) for updates on provider support.
+{% /callout %}
 
 {% /tab %}
 {% /tabs %}
