@@ -1,110 +1,77 @@
 import * as vscode from "vscode"
-import type { KiloClient, PermissionConfig, PermissionActionConfig } from "@kilocode/sdk/v2/client"
+import type { KiloClient, Event } from "@kilocode/sdk/v2/client"
 import type { KiloConnectionService } from "../services/cli-backend/connection-service"
 
-const KNOWN_TOOLS = [
-  "read",
-  "edit",
-  "glob",
-  "grep",
-  "list",
-  "bash",
-  "task",
-  "external_directory",
-  "lsp",
-  "skill",
-  "todowrite",
-  "todoread",
-  "question",
-  "webfetch",
-  "websearch",
-  "codesearch",
-  "doom_loop",
-] as const
-
+/**
+ * Runtime auto-accept toggle for permissions.
+ *
+ * Mirrors the desktop app pattern (packages/app/src/context/permission.tsx):
+ * instead of writing to the config file, we intercept `permission.asked` SSE
+ * events and auto-reply "once" to each. This avoids config-layer issues
+ * (merged vs global, sparse defaults) and works even when the sidebar is closed.
+ */
 export function registerToggleAutoApprove(
   context: vscode.ExtensionContext,
   connectionService: KiloConnectionService,
 ): void {
+  let active = false
+  // Bumped on disable to invalidate in-flight enable drains
+  let generation = 0
+
+  const unsubscribe = connectionService.onEvent((event: Event) => {
+    if (!active) return
+    if (event.type !== "permission.asked") return
+    const client = tryGetClient(connectionService)
+    if (!client) return
+    const dir = getWorkspaceDirectory()
+    client.permission.reply({ requestID: event.properties.id, directory: dir, reply: "once" }).catch((err) => {
+      console.error("[Kilo New] toggleAutoApprove: failed to auto-reply:", err)
+    })
+  })
+
+  context.subscriptions.push({ dispose: unsubscribe })
+
   context.subscriptions.push(
     vscode.commands.registerCommand("kilo-code.new.toggleAutoApprove", async () => {
-      let client: KiloClient | undefined
-      try {
-        client = connectionService.getClient()
-      } catch {
-        vscode.window.showErrorMessage("Kilo backend is not connected. Please wait for the connection to establish.")
-        return
-      }
-      if (!client) {
-        vscode.window.showErrorMessage("Kilo backend is not connected. Please wait for the connection to establish.")
-        return
-      }
+      active = !active
+      generation++
+      const snapshot = generation
 
-      try {
-        const dir = getWorkspaceDirectory()
-        const { data: config } = await client.config.get({ directory: dir }, { throwOnError: true })
-
-        const perm = config.permission
-        const target = isAutoApproveOn(perm) ? "ask" : "allow"
-        const updated = buildToggled(perm, target)
-
-        await client.global.config.update({ config: { permission: updated } }, { throwOnError: true })
-        vscode.window.showInformationMessage(target === "allow" ? "Auto-approve enabled" : "Auto-approve disabled")
-      } catch (err) {
-        console.error("[Kilo New] toggleAutoApprove: failed:", err)
-        vscode.window.showErrorMessage("Failed to toggle auto-approve")
+      if (active) {
+        vscode.window.showInformationMessage("Auto-approve enabled")
+        // Drain any already-pending permission requests (same as desktop app's enable())
+        const client = tryGetClient(connectionService)
+        if (client) {
+          const dir = getWorkspaceDirectory()
+          try {
+            const { data: pending } = await client.permission.list({ directory: dir }, { throwOnError: true })
+            for (const req of pending) {
+              // Bail if toggled off while draining
+              if (generation !== snapshot) break
+              await client.permission.reply({ requestID: req.id, directory: dir, reply: "once" }).catch((err) => {
+                console.error("[Kilo New] toggleAutoApprove: failed to drain pending:", err)
+              })
+            }
+          } catch (err) {
+            console.error("[Kilo New] toggleAutoApprove: failed to list pending permissions:", err)
+          }
+        }
+      } else {
+        vscode.window.showInformationMessage("Auto-approve disabled")
       }
     }),
   )
 }
 
-function isAutoApproveOn(perm: PermissionConfig | undefined): boolean {
-  if (perm === undefined || perm === null) return false
-  if (typeof perm === "string") return perm === "allow"
-  if (typeof perm !== "object") return false
-  return KNOWN_TOOLS.every((key) => {
-    const val = perm[key]
-    if (val === undefined || val === null) return false
-    if (typeof val === "string") return val === "allow"
-    if (typeof val === "object" && val !== null) return (val as Record<string, string>)["*"] === "allow"
-    return false
-  })
-}
-
-function buildToggled(perm: PermissionConfig | undefined, target: PermissionActionConfig): PermissionConfig {
-  // When currently a scalar or absent, toggling produces a scalar
-  if (perm === undefined || perm === null || typeof perm === "string") {
-    return target
+function tryGetClient(connectionService: KiloConnectionService): KiloClient | undefined {
+  try {
+    return connectionService.getClient()
+  } catch {
+    return undefined
   }
-
-  // Build updated permission object preserving pattern-level exceptions
-  const updated: Record<string, unknown> = {}
-  for (const key of KNOWN_TOOLS) {
-    const val = perm[key]
-    if (val === undefined || val === null || typeof val === "string") {
-      updated[key] = target
-    } else if (typeof val === "object") {
-      updated[key] = { ...(val as Record<string, string>), "*": target }
-    }
-  }
-  // Handle extra keys (MCP/custom tools) already in config
-  for (const [key, val] of Object.entries(perm)) {
-    if (key === "__originalKeys") continue
-    if (updated[key] !== undefined) continue
-    if (val === undefined || val === null || typeof val === "string") {
-      updated[key] = target
-    } else if (typeof val === "object" && !Array.isArray(val)) {
-      updated[key] = { ...(val as Record<string, string>), "*": target }
-    }
-  }
-
-  return updated as PermissionConfig
 }
 
 function getWorkspaceDirectory(): string {
-  const folders = vscode.workspace.workspaceFolders
-  if (folders && folders.length > 0) {
-    return folders[0].uri.fsPath
-  }
-  return process.cwd()
+  const folder = vscode.workspace.workspaceFolders?.[0]
+  return folder ? folder.uri.fsPath : process.cwd()
 }
