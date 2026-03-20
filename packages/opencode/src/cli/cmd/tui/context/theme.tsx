@@ -1,6 +1,6 @@
 import { SyntaxStyle, RGBA, type TerminalColors } from "@opentui/core"
 import path from "path"
-import { createEffect, createMemo, onMount } from "solid-js"
+import { createEffect, createMemo, createSignal, onMount } from "solid-js"
 import { createSimpleContext } from "./helper"
 import { Glob } from "../../../../util/glob"
 import aura from "./theme/aura.json" with { type: "json" }
@@ -293,9 +293,7 @@ export const { use: useTheme, provider: ThemeProvider } = createSimpleContext({
       active: (config.theme ?? kv.get("theme", "kilo")) as string, // kilocode_change
       ready: false,
     })
-    const [bgMode, setBgMode] = createStore({
-      value: kv.get("background_mode", "solid") as "solid" | "transparent",
-    })
+    const [bgMode, setBgMode] = createSignal(kv.get("background_mode", "solid") as "solid" | "transparent")
 
     createEffect(() => {
       const theme = config.theme
@@ -361,8 +359,8 @@ export const { use: useTheme, provider: ThemeProvider } = createSimpleContext({
     })
 
     const values = createMemo(() => {
-      const resolved = resolveTheme(store.themes[store.active] ?? store.themes.kilo, store.mode)
-      if (bgMode.value === "transparent") {
+      const resolved = { ...resolveTheme(store.themes[store.active] ?? store.themes.kilo, store.mode) }
+      if (bgMode() === "transparent") {
         resolved.background = RGBA.fromInts(resolved.background.r, resolved.background.g, resolved.background.b, 0.01)
       }
       return resolved
@@ -398,10 +396,10 @@ export const { use: useTheme, provider: ThemeProvider } = createSimpleContext({
         kv.set("theme", theme)
       },
       get backgroundMode() {
-        return bgMode.value
+        return bgMode()
       },
       setBackgroundMode(mode: "solid" | "transparent") {
-        setBgMode("value", mode)
+        setBgMode(mode)
         kv.set("background_mode", mode)
       },
       get ready() {
