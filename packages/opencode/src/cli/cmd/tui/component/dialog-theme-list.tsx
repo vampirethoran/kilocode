@@ -1,12 +1,15 @@
 import { DialogSelect, type DialogSelectRef } from "../ui/dialog-select"
-import { useTheme } from "../context/theme"
+import { useTheme, selectedForeground } from "../context/theme"
 import { useDialog } from "../ui/dialog"
 import { onCleanup } from "solid-js"
+import { TextAttributes } from "@opentui/core"
 import { useKeyboard } from "@opentui/solid"
 
 export function DialogThemeList() {
   const ctx = useTheme()
+  const { theme } = ctx
   const dialog = useDialog()
+  const fg = selectedForeground(theme)
   let confirmed = false
   let ref: DialogSelectRef<string>
   const initial = ctx.selected
@@ -29,6 +32,8 @@ export function DialogThemeList() {
   onCleanup(() => {
     if (!confirmed) ctx.set(initial)
   })
+
+  const solidActive = () => ctx.backgroundMode === "solid"
 
   return (
     <DialogSelect
@@ -55,6 +60,30 @@ export function DialogThemeList() {
         const first = ref.filtered.find((opt) => opt.value !== initial)
         if (first) ctx.set(first.value)
       }}
+      footer={
+        <box paddingLeft={4} paddingRight={4} paddingTop={1} paddingBottom={1}>
+          <text fg={theme.textMuted}>
+            Press tab to cycle transparency modes:{" "}
+            <span
+              style={{
+                fg: solidActive() ? theme.primary : theme.textMuted,
+                attributes: solidActive() ? TextAttributes.BOLD : undefined,
+              }}
+            >
+              Solid
+            </span>
+            {" | "}
+            <span
+              style={{
+                fg: !solidActive() ? theme.primary : theme.textMuted,
+                attributes: !solidActive() ? TextAttributes.BOLD : undefined,
+              }}
+            >
+              Transparent
+            </span>
+          </text>
+        </box>
+      }
     />
   )
 }

@@ -29,6 +29,7 @@ export interface DialogSelectProps<T> {
   }[]
   current?: T
   header?: JSX.Element
+  footer?: JSX.Element
 }
 
 export interface DialogSelectOption<T = any> {
@@ -352,6 +353,7 @@ export function DialogSelect<T>(props: DialogSelectProps<T>) {
           </For>
         </box>
       </Show>
+      <Show when={props.footer}>{props.footer}</Show>
     </box>
   )
 }
